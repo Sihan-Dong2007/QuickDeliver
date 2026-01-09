@@ -2,7 +2,11 @@
 
 [My Notes](notes.md)
 
-Have you ever struggled to give an accurate delivery time when factors like food type and weather keep changing? QuickDeliver is designed to help food merchants make realistic delivery estimates without extra effort. Merchants enter basic order information, select the food being prepared, and account for current weather conditions, and the application calculates an expected delivery time automatically. Orders are then displayed on a shared courier dashboard, where drivers can see order details and delivery times at a glance. By simplifying time estimation and improving coordination, QuickDeliver helps deliveries run more smoothly for both merchants and couriers.
+## Introduction
+
+This project is a food delivery management web application that helps merchants estimate delivery times based on food type and weather conditions. Merchants enter their store’s name to login, then enter a customer’s name, select the ordered food and current weather, and the backend calculates an estimated delivery time.
+
+All orders are stored persistently and displayed on a separate dashboard showing customer names, merchant names and delivery times, allowing delivery personnel to easily view and manage deliveries. Every merchant also has the ability to clear all existing order records.
 
 
 > [!NOTE]
