@@ -39,7 +39,10 @@ Here is a sequence diagram that shows how marchant would interact with the backe
 sequenceDiagram
     actor store
     actor Website
+    actor Database
     store->>Website: client's name, store's name, meal type, weather type
+    Website->>Database: client's name, store's name, meal type, weather type
+    Database-->>Website: client's name, store's name, dilivery time 
 ```
 
 ### Key features
