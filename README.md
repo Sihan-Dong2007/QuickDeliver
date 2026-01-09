@@ -67,7 +67,7 @@ I am going to use the required technologies in the following ways.
 
 - **CSS** - Application styling that is responsive and visually clear. Uses good whitespace, color choice, and contrast. Dashboard table for orders is easy to read on different screen sizes.
 - **React** - Provides consumer name entry, store name entry, order entry, food and weather selection, and displays calculated delivery times. Reactive to merchant’s actions, dynamically updates the delivery dashboard when new orders are added or deleted. Component-based views for forms and dashboard.
-- **Service** - 
+- **Service** - Backend service with endpoints for:
  1. Retrieving food options and weather types
  2. Submitting new orders
  3. Calculating delivery times based on food characteristics and selected weather
