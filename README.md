@@ -4,8 +4,6 @@
 
 Have you ever struggled to give an accurate delivery time when factors like food type and weather keep changing? QuickDeliver is designed to help food merchants make realistic delivery estimates without extra effort. Merchants enter basic order information, select the food being prepared, and account for current weather conditions, and the application calculates an expected delivery time automatically. Orders are then displayed on a shared courier dashboard, where drivers can see order details and delivery times at a glance. By simplifying time estimation and improving coordination, QuickDeliver helps deliveries run more smoothly for both merchants and couriers.
 
-> [!NOTE]
-> This is a template for your startup application. You must modify this `README.md` file for each phase of your development. You only need to fill in the section for each deliverable when that deliverable is submitted in Canvas. Without completing the section for a deliverable, the TA will not know what to look for when grading your submission. Feel free to add additional information to each deliverable description, but make sure you at least have the list of rubric items and a description of what you did for each item.
 
 > [!NOTE]
 > If you are not familiar with Markdown then you should review the [documentation](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) before continuing.
