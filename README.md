@@ -37,9 +37,9 @@ Here is a sequence diagram that shows how marchant would interact with the backe
 
 ```mermaid
 sequenceDiagram
-    actor You
+    actor store
     actor Website
-    You->>Website: Replace this with your design
+    store->>Website: client's name, store's name, meal type, weather type
 ```
 
 ### Key features
