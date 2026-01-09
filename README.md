@@ -44,9 +44,14 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+1.Ability for merchant to enter the store’s name and the customer name
+2.Ability for merchant to select the food items for the customer (three options: Pan-fried Bun, Mini Wontons with Shrimp & Water Chestnut, Dry/Fragrant Hot Pot Bullfrog)
+3.Ability for merchant to select the current weather (three options: Hot & Humid, Cold & Damp, Rainy)
+4.Backend calculates estimated delivery time based on food characteristics and weather
+6.Display of the store’s name, customer names, and corresponding delivery times for each order on a dashboard
+7.Ability for every merchant to delete all previous order records
+8.Every merchant will get a notification when another merchant places a new order
+9.Order information persistently stored.
 
 ### Technologies
 
