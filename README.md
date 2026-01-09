@@ -57,12 +57,23 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - 
+ 1. One for entering the store’s name
+ 2. One for order entry (select food items and weather, enter customer’s name)
+ 3. One for delivery dashboard displaying all orders, customer names, and estimated delivery times. Hyperlinks between pages for navigation.
+
+- **CSS** - Application styling that is responsive and visually clear. Uses good whitespace, color choice, and contrast. Dashboard table for orders is easy to read on different screen sizes.
+- **React** - Provides consumer name entry, store name entry, order entry, food and weather selection, and displays calculated delivery times. Reactive to merchant’s actions, dynamically updates the delivery dashboard when new orders are added or deleted. Component-based views for forms and dashboard.
+- **Service** - 
+ 1. Retrieving food options and weather types
+ 2. Submitting new orders
+ 3. Calculating delivery times based on food characteristics and selected weather
+ 4. Retrieving current order for display on delivery dashboard
+ 5. Deleting all previous orders on merchant request
+ 6. Entering consumer’s name.
+ 7. Entering store’s name.
+- **DB/Login** - DB (Database) – Stores order numbers, customer names, store names and calculated delivery times. Persistent storage ensures no data is lost on refresh.
+- **WebSocket** - As orders are submitted or deleted, the delivery dashboard updates in real time for delivery personnel. When a store places an order, other stores get a notification.
 
 ## 🚀 AWS deliverable
 
