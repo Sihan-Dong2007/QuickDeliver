@@ -32,6 +32,8 @@ Have you ever struggled to give an accurate delivery time when factors like food
 ### Design
 
 ![Design image](design1.jpg)
+![Design image](design2.jpg)
+
 
 Here is a sequence diagram that shows how marchant would interact with the backend to place orders.
 
