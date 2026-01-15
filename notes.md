@@ -11,8 +11,11 @@
 ## AWS
 
 My IP address is: 3.208.115.189
+
 The command to remote shell into my server is: ssh -i Desktop/web/Dong2007.pem ubuntu@3.208.115.189
+
 The command in the console to find the IP address if a domain is: dig amazon.com
+
 Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
 
 ## Caddy
