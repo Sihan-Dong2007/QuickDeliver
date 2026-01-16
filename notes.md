@@ -21,6 +21,8 @@ Launching my AMI I initially put it on a private subnet. Even though it had a pu
 ## Caddy
 public_html is a symbolic link in the user's home directory that points to the actual Caddy static file directory.
 
+A forward proxy sits in front of the client and forwards requests to external servers, while a reverse proxy sits in front of the server and routes incoming requests to internal services.
+
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
 ## HTML
