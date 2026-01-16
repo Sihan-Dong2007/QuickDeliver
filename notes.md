@@ -19,6 +19,7 @@ The command in the console to find the IP address if a domain is: dig amazon.com
 Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
 
 ## Caddy
+public_html is a symbolic link in the user's home directory that points to the actual Caddy static file directory.
 
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
