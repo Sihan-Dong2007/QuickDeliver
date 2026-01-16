@@ -27,6 +27,8 @@ HTTPS is a secure version of HTTP that establishes an encrypted connection using
 
 During the TLS handshake, the server presents a web certificate that identifies its domain name, and the browser verifies that the certificate matches the URL and is valid before establishing a secure connection.
 
+Caddy automatically requests a web certificate from Let's Encrypt for any domain it does not yet have a certificate for, and Let's Encrypt verifies domain ownership by checking a digitally signed response at a temporary URL before issuing the certificate.
+
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
 ## HTML
