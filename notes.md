@@ -25,6 +25,8 @@ A forward proxy sits in front of the client and forwards requests to external se
 
 HTTPS is a secure version of HTTP that establishes an encrypted connection using TLS before any data is transmitted.
 
+During the TLS handshake, the server presents a web certificate that identifies its domain name, and the browser verifies that the certificate matches the URL and is valid before establishing a secure connection.
+
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
 ## HTML
