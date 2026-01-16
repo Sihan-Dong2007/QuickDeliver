@@ -23,6 +23,8 @@ public_html is a symbolic link in the user's home directory that points to the a
 
 A forward proxy sits in front of the client and forwards requests to external servers, while a reverse proxy sits in front of the server and routes incoming requests to internal services.
 
+HTTPS is a secure version of HTTP that establishes an encrypted connection using TLS before any data is transmitted.
+
 No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
 
 ## HTML
