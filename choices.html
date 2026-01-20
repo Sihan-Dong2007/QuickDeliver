@@ -22,7 +22,7 @@
         <main>
             <h2>Food Choices</h2>
             <hr>
-            <form>
+            <form id="choicesForm" action="table.html" method="get">
                 <input type="radio" id="food1" name="food">
                 <label for="food1">Pizza</label>
 
@@ -31,10 +31,11 @@
 
                 <input type="radio" id="food3" name="food">
                 <label for="food3">Sushi</label>
-            </form>
-            <h2>Weather Choices</h2>
-            <hr>
-            <form>
+
+
+                <h2>Weather Choices</h2>
+                <hr>
+
                 <input type="radio" id="weather1" name="weather">
                 <label for="weather1">Sunny</label>
 
@@ -43,8 +44,17 @@
 
                 <input type="radio" id="weather3" name="weather">
                 <label for="weather3">Cloudy</label>
-            </form>
 
+      
+                <div style="margin-top:30px;">
+                    <label for="transport">Estimated Transport Time:</label>
+                    <input type="text" id="transport" name="transport" placeholder="deliver time" readonly>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <button type="submit">Confirm</button>
+                </div>
+            </form>
 
         </main>
     </body>
