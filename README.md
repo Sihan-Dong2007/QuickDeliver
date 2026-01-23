@@ -91,12 +91,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **HTML pages** - I created three HTML pages. One for logging in, one for the merchants to choose the food types and weather types, one for the diaplay of the oder delivery time, store's name and oder number.
-- [ ] **Proper HTML element usage** - I have my image in the home page.
+- [ ] **Proper HTML element usage** - I used tags to structure my web page.
 - [ ] **Links** - I have links to travel between pages, a link to my github, button can also tralvel between pages using action.
 - [ ] **Text** - I have welcome text, logo text, weather choices, food choices etc.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
+- [ ] **3rd party API placeholder** - In the view order page, there is a place holder for a third party API text.
+- [ ] **Images** - I have my image in the home page.
+- [ ] **Login placeholder** - It's also in the home page.
 - [ ] **DB data placeholder** - I did not complete this part of the deliverable.
 - [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
 
