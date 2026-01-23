@@ -97,8 +97,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **3rd party API placeholder** - In the view order page, there is a place holder for a third party API text.
 - [ ] **Images** - I have my image in the home page.
 - [ ] **Login placeholder** - It's also in the home page.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [ ] **DB data placeholder** - store names and passwords login. decide whether the name has already exist, whether the password is correct, whether the store has registered.
+- [ ] **WebSocket placeholder** - once an order is placed on the choices page, everyone who is on the table page can see the information of the recently added order.
 
 ## 🚀 CSS deliverable
 
