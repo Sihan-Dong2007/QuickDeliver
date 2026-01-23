@@ -92,8 +92,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [ ] **HTML pages** - I created three HTML pages. One for logging in, one for the merchants to choose the food types and weather types, one for the diaplay of the oder delivery time, store's name and oder number.
 - [ ] **Proper HTML element usage** - I have my image in the home page.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
+- [ ] **Links** - I have links to travel between pages, a link to my github, button can also tralvel between pages using action.
+- [ ] **Text** - I have welcome text, logo text, weather choices, food choices etc.
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
 - [ ] **Images** - I did not complete this part of the deliverable.
 - [ ] **Login placeholder** - I did not complete this part of the deliverable.
