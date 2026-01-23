@@ -91,7 +91,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **HTML pages** - I created three HTML pages. One for logging in, one for the merchants to choose the food types and weather types, one for the diaplay of the oder delivery time, store's name and oder number.
-- [ ] **Proper HTML element usage** - I used tags to structure my web page.
+- [ ] **Proper HTML element usage** - I used tags to structure my web page, the user name diaplay is on the table page.
 - [ ] **Links** - I have links to travel between pages, a link to my github, button can also tralvel between pages using action.
 - [ ] **Text** - I have welcome text, logo text, weather choices, food choices etc.
 - [ ] **3rd party API placeholder** - In the view order page, there is a place holder for a third party API text.
