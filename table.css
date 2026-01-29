@@ -169,3 +169,25 @@ section p:last-of-type {
   text-align: right;
   opacity: 0.9;
 }
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  border-radius: 15px 15px 0 0;
+}
+
+footer span,
+footer a {
+  color: var(--text);
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--secondary);
+  text-decoration: underline;
+}
