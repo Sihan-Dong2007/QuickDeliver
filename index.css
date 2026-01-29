@@ -79,10 +79,9 @@ menu a:hover {
 }
 
 main {
+  flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
-  flex: 1;
   padding: 3rem 1rem;
 }
 
