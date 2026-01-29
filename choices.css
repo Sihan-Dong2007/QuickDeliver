@@ -154,3 +154,20 @@ footer a:hover {
   color: var(--secondary);
   text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+  menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  #choicesForm {
+    padding: 1.5rem;
+  }
+}
