@@ -152,3 +152,20 @@ tbody tr:nth-child(even) {
 tbody tr:hover {
   background: rgba(255,255,255,0.25);
 }
+
+section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.1);
+}
+
+section p:first-of-type {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+section p:last-of-type {
+  text-align: right;
+  opacity: 0.9;
+}
