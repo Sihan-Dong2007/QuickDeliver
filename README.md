@@ -108,7 +108,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Use of a CSS framework** - 1. Bootstrap 5 is included to provide a responsive baseline and consistent default styling across browsers. 2. custom CSS is layered on top of the framework.
 - [ ] **All visual elements styled using CSS** - 1. all visual presentation is handled through external CSS files. 2. Include: Typography, colors, spacing, layout, tables, navigation, hover effects, and cards.
 - [ ] **Responsive to window resizing using flexbox and/or grid display** - 1. flexbox is used to control layout and responsiveness. 2. main content area contains the card layout, and internal components use column-based flex layouts 3. media queries adjust layout behavior for smaller screen sizes.
-- [ ] **Use of a imported font** - I did not complete this part of the deliverable.
+- [ ] **Use of a imported font** - Inter font is imported from Google Fonts and applied globally
 - [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
 
 ## 🚀 React part 1: Routing deliverable
