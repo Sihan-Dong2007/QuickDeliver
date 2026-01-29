@@ -145,7 +145,7 @@ footer span {
 }
 
 footer a {
-  color: var(--text); /* 白色 GitHub 链接 */
+  color: var(--text); 
   text-decoration: none;
   transition: color 0.3s ease;
 }
