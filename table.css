@@ -191,3 +191,20 @@ footer a:hover {
   color: var(--secondary);
   text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+}
