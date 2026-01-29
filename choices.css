@@ -5,9 +5,9 @@
 }
 
 :root {
-  --primary: #2563eb;      /* 蓝色主题 */
-  --secondary: #9333ea;    /* 紫色主题 */
-  --bg: linear-gradient(135deg, #2563eb, #9333ea); /* 渐变背景 */
+  --primary: #2563eb;      
+  --secondary: #9333ea;    
+  --bg: linear-gradient(135deg, #2563eb, #9333ea); 
   --text: #f8fafc;
 }
 
@@ -112,4 +112,21 @@ main h2 {
   background: rgba(255,255,255,0.2);
   color: var(--text);
   width: 100%;
+}
+
+#choicesForm button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary), 0 0 20px var(--secondary);
+  transition: all 0.3s ease;
+}
+
+#choicesForm button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px var(--primary), 0 0 40px var(--secondary);
 }
