@@ -14,3 +14,16 @@ body {
   background-color: var(--bg);
   color: var(--text);
 }
+
+header {
+  padding: 1rem 2rem;
+  background: white;
+}
+
+header h1 {
+  color: var(--primary);
+}
+
+.logo {
+  height: 50px;
+}
