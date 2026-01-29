@@ -94,3 +94,12 @@ main h2 {
   flex-direction: column;
   gap: 1rem;
 }
+
+#choicesForm input[type="radio"] {
+  margin-right: 0.5rem;
+  accent-color: var(--primary); 
+}
+
+#choicesForm label {
+  margin-right: 1rem;
+}
