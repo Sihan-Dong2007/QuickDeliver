@@ -140,3 +140,15 @@ th {
   font-weight: 600;
 }
 
+tbody tr {
+  background: rgba(255,255,255,0.08);
+  transition: background 0.3s ease;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.12);
+}
+
+tbody tr:hover {
+  background: rgba(255,255,255,0.25);
+}
