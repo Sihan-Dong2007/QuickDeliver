@@ -23,11 +23,17 @@ body {
 
 header {
   padding: 1rem 2rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0 0 15px 15px;
 }
 
 header h1 {
-  color: var(--primary);
+  color: var(--text);
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 }
 
 .logo {
