@@ -94,3 +94,11 @@ main::before {
   display: none;
 }
 
+main {
+  gap: 2rem;
+}
+
+main {
+  max-width: 900px;
+}
+
