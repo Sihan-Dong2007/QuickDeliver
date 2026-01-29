@@ -126,3 +126,17 @@ table {
   overflow: hidden;
   border-radius: 12px;
 }
+
+thead {
+  background: rgba(255,255,255,0.2);
+}
+
+th, td {
+  padding: 0.8rem 1rem;
+  text-align: center;
+}
+
+th {
+  font-weight: 600;
+}
+
