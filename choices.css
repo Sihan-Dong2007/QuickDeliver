@@ -103,3 +103,13 @@ main h2 {
 #choicesForm label {
   margin-right: 1rem;
 }
+
+#transport {
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  background: rgba(255,255,255,0.2);
+  color: var(--text);
+  width: 100%;
+}
