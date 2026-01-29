@@ -9,6 +9,7 @@
   --secondary: #9333ea;    
   --bg: linear-gradient(135deg, #2563eb, #9333ea); 
   --text: #f8fafc;
+  --glass: rgba(255, 255, 255, 0.12);
 }
 
 body {
