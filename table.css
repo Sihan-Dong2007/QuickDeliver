@@ -80,3 +80,17 @@ main {
   flex: 1;
   padding: 3rem 1rem;
 }
+
+main > * {
+  width: 100%;
+}
+
+main {
+  align-items: flex-start;
+}
+
+main::before {
+  content: "";
+  display: none;
+}
+
