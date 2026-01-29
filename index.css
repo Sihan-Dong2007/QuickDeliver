@@ -77,3 +77,12 @@ menu a:hover::after {
 menu a:hover {
   color: var(--secondary);
 }
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 3rem 1rem;
+}
+
