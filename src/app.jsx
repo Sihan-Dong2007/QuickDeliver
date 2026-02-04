@@ -24,7 +24,7 @@ export default function App() {
 
           <menu className="navbar-nav flex-row gap-3">
             <li className="nav-item">
-              <NavLink className="nav-link" to="login">
+              <NavLink className="nav-link" to="/">
                 Login
               </NavLink>
             </li>
