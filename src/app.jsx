@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import logo from 'QuickDeliver/public/logo.png';
 
 
 export default function App() {
@@ -10,8 +9,11 @@ export default function App() {
     <div className="body bg-light text-dark">
       <header className="container-fluid">
         <nav className="navbar fixed-top navbar-light bg-light">
-          <div className="navbar-brand">
-            Quick Delivery<sup>&reg;</sup>
+          <div className="navbar-brand d-flex align-items-center gap-2">
+            <img src="/logo.png" alt="Quick Delivery Logo" className="logo" />
+            <span>
+                Quick Delivery<sup>&reg;</sup>
+            </span>
           </div>
 
           <menu className="navbar-nav flex-row gap-3">
