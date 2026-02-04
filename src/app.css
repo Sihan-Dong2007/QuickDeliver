@@ -3,6 +3,10 @@
   margin: 0;
   padding: 0;
 }
+.navbar .nav-link {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 600;
+}
 
 :root {
   --primary: #2563eb;      
