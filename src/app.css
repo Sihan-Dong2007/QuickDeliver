@@ -177,17 +177,39 @@ footer {
 
   text-align: center;
   font-size: 0.9rem;
+
+  color: rgba(255, 255, 255, 0.9);
+}
+
+footer span {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 footer a {
-  color: #f8fafc; 
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
   text-decoration: none;
+  position: relative;
   transition: color 0.3s ease;
 }
 
+footer a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background: var(--secondary);
+  left: 0;
+  bottom: -2px;
+  transition: width 0.3s ease;
+}
+
+footer a:hover::after {
+  width: 100%;
+}
+
 footer a:hover {
-  color: var(--secondary); 
-  text-decoration: underline;
+  color: var(--secondary);
 }
 
 @media (max-width: 600px) {

@@ -42,7 +42,7 @@ export default function App() {
       </main>
 
 
-      <footer className="bg-light text-muted mt-5">
+      <footer className="mt-5">
         <div className="container-fluid text-center py-3">
           <span className="text-reset">Sihan Dong</span>
           <br />
