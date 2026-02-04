@@ -2,8 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import logo from './logo.png';
-import './index.css';
+import logo from 'QuickDeliver/public/logo.png';
+
 
 export default function App() {
   return (
