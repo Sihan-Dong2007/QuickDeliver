@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
-export default function Login() {
+export function Login() {
   return (
     <main>
       <h1>Welcome to Quick Delivery</h1>

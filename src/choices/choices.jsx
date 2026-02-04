@@ -4,7 +4,7 @@ import './choices.css';
 
 
 
-export default function Choices() {
+export function Choices() {
   return (
     <main>
       <form id="choicesForm" action="/table" method="get">
