@@ -11,6 +11,7 @@ import { Table } from './table/table';
 
 export default function App() {
   return (
+    <BrowserRouter>
     <div className="body">
       <header className="container-fluid">
         <nav className="navbar navbar-dark">
@@ -60,5 +61,6 @@ export default function App() {
         </div>
       </footer>
     </div>
+    </BrowserRouter>
   );
 }
