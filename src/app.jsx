@@ -43,9 +43,12 @@ export default function App() {
       </header>
 
 
-      <main className="container text-center mt-5 pt-5">
-        App components go here.
-      </main>
+      <Routes>
+        <Route path='/' element={<Login />} exact />
+        <Route path='/choices' element={<Choices />} />
+        <Route path='/table' element={<Table />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
 
 
       <footer className="mt-5">
@@ -63,4 +66,8 @@ export default function App() {
     </div>
     </BrowserRouter>
   );
+}
+
+function NotFound() {
+  return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
 }
