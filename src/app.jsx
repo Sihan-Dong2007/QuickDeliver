@@ -24,19 +24,19 @@ export default function App() {
 
           <menu className="navbar-nav flex-row gap-3">
             <li className="nav-item">
-              <a className="nav-link" href="#">
-                Home
-              </a>
+              <NavLink className="nav-link" to="login">
+                Login
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to="choices">
                 Food Choices
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to="table">
                 View Order
-              </a>
+              </NavLink>
             </li>
           </menu>
         </nav>
@@ -55,12 +55,12 @@ export default function App() {
         <div className="container-fluid text-center py-3">
           <span className="text-reset">Sihan Dong</span>
           <br />
-          <a
+          <NavLink
             className="text-reset"
-            href="https://github.com/Sihan-Dong2007/QuickDeliver"
+            to="https://github.com/Sihan-Dong2007/QuickDeliver"
           >
             GitHub
-          </a>
+          </NavLink>
         </div>
       </footer>
     </div>
