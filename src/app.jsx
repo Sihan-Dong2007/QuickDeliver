@@ -8,7 +8,6 @@ import './index.css';
 export default function App() {
   return (
     <div className="body bg-light text-dark">
-      {/* ===== Header / Navbar ===== */}
       <header className="container-fluid">
         <nav className="navbar fixed-top navbar-light bg-light">
           <div className="navbar-brand">
@@ -35,12 +34,12 @@ export default function App() {
         </nav>
       </header>
 
-      {/* ===== Main Content ===== */}
+
       <main className="container text-center mt-5 pt-5">
         App components go here.
       </main>
 
-      {/* ===== Footer ===== */}
+
       <footer className="bg-light text-muted mt-5">
         <div className="container-fluid text-center py-3">
           <span className="text-reset">Sihan Dong</span>
