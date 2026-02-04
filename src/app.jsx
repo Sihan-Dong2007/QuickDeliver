@@ -6,9 +6,9 @@ import './app.css';
 
 export default function App() {
   return (
-    <div className="body bg-light text-dark">
+    <div className="body">
       <header className="container-fluid">
-        <nav className="navbar fixed-top navbar-light bg-light">
+        <nav className="navbar navbar-dark">
           <div className="navbar-brand d-flex align-items-center gap-2">
             <img src="/logo.png" alt="Quick Delivery Logo" className="logo" />
             <span>
