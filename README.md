@@ -115,7 +115,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
+- [ ] **Bundled using Vite** - I converted my startup to a React SPA. I used Vite for bundling and React Router to manage navigation between my stubbed components. I also integrated Bootstrap for layout and ensured all legacy CSS was correctly mapped to the new component structure.(1. Used `npm install` to manage dependencies like `react-router-dom` and `bootstrap`. 2. Configured package.json with scripts for dev, build, and preview.) I reorganized my files into public and sources, inside sources, I have three files - choices, login, and table for each of my page.
 - [ ] **Components** - I did not complete this part of the deliverable.
 - [ ] **Router** - I did not complete this part of the deliverable.
 
