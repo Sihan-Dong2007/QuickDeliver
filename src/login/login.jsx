@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function Login() {
   return (
-    <main>
+    <main className="container d-flex justify-content-center align-items-center py-5">
       <h1>Welcome to Quick Delivery</h1>
 
       <form method="get" action="/choices">
