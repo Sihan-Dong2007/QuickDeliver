@@ -4,7 +4,7 @@ import './table.css';
 
 
 
-export function Table() {
+export function Table() { 
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <div className="card-container w-100">

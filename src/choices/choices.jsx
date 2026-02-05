@@ -6,7 +6,7 @@ import './choices.css';
 
 export function Choices() {
   return (
-    <main>
+    <main className="container d-flex justify-content-center align-items-center py-5">
       <form id="choicesForm" action="/table" method="get">
         <h2>Food Choices</h2>
         <hr />
