@@ -1,56 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './table.css';
 
+export function Table() {
+  const [order, setOrder] = useState(null);
+  const [store, setStore] = useState('');
 
+  useEffect(() => {
+    const savedOrder = localStorage.getItem('order');
+    const savedStore = localStorage.getItem('store');
 
-export function Table() { 
+    if (savedOrder) {
+      setOrder(JSON.parse(savedOrder));
+    }
+
+    if (savedStore) {
+      setStore(savedStore);
+    }
+  }, []);
+
+  if (!order) {
+    return (
+      <main className="table-page container py-5 text-center">
+        <h2>No order found.</h2>
+        <p>Please go back and create an order.</p>
+      </main>
+    );
+  }
+
   return (
-    <main className="container d-flex justify-content-center align-items-center py-5">
-      <div className="card-container w-100">
+    <main className="table-page container py-5">
+      <div className="table-card">
 
         <h2>You are signed in as:</h2>
-        <p>Store Name</p>
+        <p>{store || 'Unknown Store'}</p>
 
         <hr />
 
         <h2>Order Information</h2>
         <hr />
 
-        <table className="table table-borderless text-light text-center">
+        <table className="custom-table">
           <thead>
             <tr>
-              <th>Order Number</th>
-              <th>Store Name</th>
+              <th>Food</th>
+              <th>Weather</th>
               <th>Delivery Time</th>
             </tr>
           </thead>
 
           <tbody>
             <tr>
-              <td>#0001</td>
-              <td>01Store</td>
-              <td>-- minutes</td>
-            </tr>
-            <tr>
-              <td>#0002</td>
-              <td>02Store</td>
-              <td>-- minutes</td>
-            </tr>
-            <tr>
-              <td>#0003</td>
-              <td>03Store</td>
-              <td>-- minutes</td>
+              <td>{order.food}</td>
+              <td>{order.weather}</td>
+              <td>{order.transportTime}</td>
             </tr>
           </tbody>
         </table>
 
-        <section className="mt-4">
-          <h2>Quote of the Day</h2>
-          <hr />
-          <p>“a randomly fetched quote from a third-party API.”</p>
-          <p>— Author</p>
-        </section>
+        <button
+          className="clear-btn mt-4"
+          onClick={() => {
+            localStorage.removeItem('order');
+            window.location.reload();
+          }}
+        >
+          Clear Order
+        </button>
 
       </div>
     </main>
