@@ -11,6 +11,8 @@ export function Login() {
     e.preventDefault();
     if (store && password) {
       console.log("Login as:", store);
+      localStorage.setItem('store', store);
+
     } else {
       setError("Please enter store and password");
     }
