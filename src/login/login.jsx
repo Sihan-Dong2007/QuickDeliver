@@ -10,6 +10,24 @@ export function Login() {
   const [store, setStore] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const savedStore = localStorage.getItem('storeName');
+    if (savedStore) {
+      setStore(savedStore);
+    }
+  }, []);
+
+  function handleLogin(event) {
+    event.preventDefault();
+
+    if (!store || !password) {
+      setError('Please enter store name and password.');
+      return;
+    }
+  }
+
+  
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <h1>Welcome to Quick Delivery</h1>
