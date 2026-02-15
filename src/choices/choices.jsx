@@ -13,6 +13,18 @@ export function Choices() {
   const [weather, setWeather] = useState('');
   const [transportTime, setTransportTime] = useState('');
 
+  useEffect(() => {
+    if (food && weather) {
+      let baseTime = 20;
+
+      if (weather === 'Hot & Humid') baseTime += 10;
+      if (weather === 'Cold & Dry') baseTime += 5;
+      if (weather === 'Plum Rain Season') baseTime += 15;
+
+      setTransportTime(`${baseTime} minutes`);
+    }
+  }, [food, weather]);
+
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <form id="choicesForm" action="/table" method="get">
