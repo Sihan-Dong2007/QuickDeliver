@@ -5,6 +5,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export function Login() {
+  const navigate = useNavigate();
+
+  const [store, setStore] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <h1>Welcome to Quick Delivery</h1>
