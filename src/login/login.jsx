@@ -1,28 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../app.css';
+import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../app.css"; 
 
 export function Login() {
-  const [store, setStore] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const navigate = useNavigate();
+  const [store, setStore] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.store === store && u.password === password);
-
-    if (user) {
-      localStorage.setItem('currentUser', store);
-      setError('');
-      navigate('/choices');
+    if (store && password) {
+      console.log("Login as:", store);
     } else {
-      setError('Store name or password is incorrect. Please Sign Up if you are new.');
+      setError("Please enter store and password");
     }
+  };
+
+  const handleSignUp = () => {
+    console.log("Go to Sign Up");
   };
 
   return (
@@ -30,6 +25,7 @@ export function Login() {
       <h1 className="mb-4">Welcome to Quick Delivery</h1>
 
       <form onSubmit={handleLogin} className="w-50">
+
         <div className="mb-3">
           <label className="form-label">Store</label>
           <input
@@ -57,18 +53,14 @@ export function Login() {
             {error}
           </div>
         )}
-
-        <button type="submit" className="btn btn-primary w-100">
-          Login
-        </button>
-
-        <button
-          type="button"
-          className="btn btn-secondary w-100 mt-2"
-          onClick={() => navigate('/signup')}
-        >
-          Sign Up
-        </button>
+        <div className="d-flex gap-2 mt-3">
+          <button type="submit" className="btn-login w-50">
+            Login
+          </button>
+          <button type="button" className="btn-login w-50" onClick={handleSignUp}>
+            Sign Up
+          </button>
+        </div>
       </form>
     </main>
   );
