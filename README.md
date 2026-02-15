@@ -123,8 +123,14 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [ ] **All functionality implemented or mocked out**
+- Implemented login functionality using React state.
+- Mocked backend authentication using localStorage to store the store name.
+- Implemented form validation and error handling.
+- [ ] **Hooks**
+- Used useState to manage form input values and error messages.
+- Used useEffect to load saved store name from localStorage when the component mounts.
+- Used React Router's useNavigate hook for programmatic navigation after login.
 
 ## 🚀 Service deliverable
 
