@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../app.css"; 
+import "../app.css"; // 注意：这里是相对路径，根据你的项目结构
+
+import { useNavigate } from "react-router-dom";
 
 export function Login() {
   const [store, setStore] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (store && password) {
-      console.log("Login as:", store);
-      localStorage.setItem('store', store);
 
+    if (store && password) {
+      localStorage.setItem("store", store);
+
+      navigate("/choices");
     } else {
       setError("Please enter store and password");
     }
   };
 
   const handleSignUp = () => {
-    console.log("Go to Sign Up");
+    navigate("/signup");
   };
 
   return (
@@ -55,6 +60,7 @@ export function Login() {
             {error}
           </div>
         )}
+
         <div className="d-flex gap-2 mt-3">
           <button type="submit" className="btn-login w-50">
             Login
