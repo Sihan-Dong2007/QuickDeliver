@@ -35,28 +35,42 @@ export function Login() {
 
 
   return (
-    <main className="container d-flex justify-content-center align-items-center py-5">
-      <h1>Welcome to Quick Delivery</h1>
+    <main className="container d-flex flex-column justify-content-center align-items-center py-5">
+      <h1 className="mb-4">Welcome to Quick Delivery</h1>
 
-      <form method="get" action="/choices">
-        <div>
-          <span>Store</span>
+      <form onSubmit={handleLogin} className="w-50">
+
+        <div className="mb-3">
+          <label className="form-label">Store</label>
           <input
             type="text"
+            className="form-control"
             placeholder="your store's name"
+            value={store}
+            onChange={(e) => setStore(e.target.value)}
           />
         </div>
 
-        <div>
-          <span>🔒</span>
+        <div className="mb-3">
+          <label className="form-label">Password</label>
           <input
             type="password"
+            className="form-control"
             placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <button type="submit">Login</button>
-        <button type="submit">Create</button>
+        {error && (
+          <div className="alert alert-danger">
+            {error}
+          </div>
+        )}
+
+        <button type="submit" className="btn btn-primary w-100">
+          Login
+        </button>
       </form>
     </main>
   );
