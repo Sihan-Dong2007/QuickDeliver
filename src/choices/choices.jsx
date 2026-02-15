@@ -6,6 +6,13 @@ import './choices.css';
 
 
 export function Choices() {
+
+  const navigate = useNavigate();
+
+  const [food, setFood] = useState('');
+  const [weather, setWeather] = useState('');
+  const [transportTime, setTransportTime] = useState('');
+
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <form id="choicesForm" action="/table" method="get">
