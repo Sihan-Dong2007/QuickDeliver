@@ -25,9 +25,15 @@ export function Login() {
       setError('Please enter store name and password.');
       return;
     }
+
+    localStorage.setItem('storeName', store);
+
+    setError('');
+    
+    navigate('/choices');
   }
 
-  
+
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <h1>Welcome to Quick Delivery</h1>
