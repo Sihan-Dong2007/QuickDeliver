@@ -25,6 +25,21 @@ export function Choices() {
     }
   }, [food, weather]);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!food || !weather) {
+      alert('Please select food and weather.');
+      return;
+    }
+
+    const order = { food, weather, transportTime };
+    localStorage.setItem('order', JSON.stringify(order));
+
+    navigate('/table');
+  }
+
+
   return (
     <main className="container d-flex justify-content-center align-items-center py-5">
       <form id="choicesForm" action="/table" method="get">
