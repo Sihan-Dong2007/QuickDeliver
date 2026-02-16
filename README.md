@@ -121,43 +121,58 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 React part 2: Reactivity deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+For this deliverable I completed the following:
 
-- [ ] **All functionality implemented or mocked out**
-- Implemented login and sign-up functionality using React state and localStorage.
-- Users must sign up first; only registered store names and passwords can log in.
-- Sign-up stores credentials in localStorage to simulate backend persistence.
-- Implemented form validation and error handling:
-- Shows an error if store name or password is empty.
-- Shows an error if attempting to sign up with an already registered store name.
-- Implemented conditional rendering:
-- The Table page only displays if an order exists.
-- The quote of the day is only shown after an order has been created.
-- Implemented mocked dynamic content:
-- Randomly selects a quote from a hardcoded list for the Table page.
-- Order and store information are loaded from localStorage to simulate a backend.
+[x] All functionality implemented or mocked out
 
-- [ ] **Hooks**
-- Used useState to manage:
-- Login form inputs (store name, password)
-- Sign-up form inputs
-- Error messages
-- Order and store state in the Table page
-- Random quote state in the Table page
-- Used useEffect to:
-- Load saved store names, order data, and select a random quote when the Table component mounts.
-- Initialize form fields if needed when components mount.
-  
-- [ ] **Navigation and routing**
-- Used React Router with <Routes> and <Route> to navigate between Login, Sign-Up, Choices, and Table pages.
-- Used useNavigate hook to programmatically redirect after successful login or sign-up.
-- Protected pages: users cannot access Choices or Table unless they are logged in.
+Implemented full login and sign-up functionality using React state and localStorage.
 
-- [ ] **Mock backend and persistence**
-- Used localStorage to mock backend storage for:
-- Registered store names and passwords
-- Orders created in the Choices page
-- Ensures that refreshing the page retains user session (store name) and order state.
+• Users must sign up before logging in.
+• Registered store names and passwords are stored in localStorage to simulate backend persistence.
+• Login validates credentials against stored users.
+
+Form validation and error handling:
+• Displays an error if store name or password is empty.
+• Prevents duplicate store name registration.
+• Displays an error for invalid login credentials.
+
+Conditional rendering:
+• Navigation links (Choices and Table) are only visible after login.
+• Protected routes prevent access to Choices and Table unless logged in.
+• The Table page only displays if an order exists.
+• The quote of the day is shown only after an order is created.
+
+Mocked dynamic content:
+• Randomly selects a quote from a predefined list on the Table page.
+
+[x]Hooks
+
+Used useState to manage:
+• Login and sign-up form inputs
+• Error messages
+• Current logged-in store
+• Order data
+• Random quote state
+
+Used useEffect to:
+• Load saved order and store data on component mount
+• Select a random quote when the Table page loads
+
+[x]Navigation and routing
+
+• Implemented routing using React Router.
+• Used useNavigate for programmatic redirects after login, sign-up, and logout.
+• Implemented protected routes to prevent unauthorized access.
+
+[x]Mock backend and persistence
+
+Used localStorage to simulate backend behavior:
+• Registered users (store name and password)
+• Current logged-in store (session persistence)
+• Order data
+
+Refreshing the page preserves login session and order state.
+
 
 
 ## 🚀 Service deliverable
