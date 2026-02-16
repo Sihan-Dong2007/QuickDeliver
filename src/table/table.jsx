@@ -6,6 +6,8 @@ export function Table() {
   const [order, setOrder] = useState(null);
   const [store, setStore] = useState('');
 
+  const [quote, setQuote] = useState(null);
+
   useEffect(() => {
     const savedOrder = localStorage.getItem('order');
     const savedStore = localStorage.getItem('store');
