@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../app.css"; // 注意：这里是相对路径，根据你的项目结构
+import "../app.css";
 
 import { useNavigate } from "react-router-dom";
 
-export function Login() {
+export function Login({ setCurrentUser }) {
   const [store, setStore] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,30 +12,31 @@ export function Login() {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!store || !password) {
-    setError("Please enter store and password");
-    return;
-  }
+    if (!store || !password) {
+      setError("Please enter store and password");
+      return;
+    }
 
-  // 读取注册过的用户列表
-  const users = JSON.parse(localStorage.getItem("users") || "[]");
+    // 读取注册过的用户列表
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-  // 查找是否有匹配的 store + password
-  const validUser = users.find(
-    (u) => u.store === store && u.password === password
-  );
+    // 查找是否有匹配的 store + password
+    const validUser = users.find(
+      (u) => u.store === store && u.password === password
+    );
 
-  if (!validUser) {
-    setError("Invalid store name or password. Please sign up first.");
-    return;
-  }
+    if (!validUser) {
+      setError("Invalid store name or password. Please sign up first.");
+      return;
+    }
 
-  // 登录成功
-  localStorage.setItem("store", store);
-  navigate("/choices");
-};
+    // 登录成功
+    localStorage.setItem("store", store);
+    setCurrentUser(store); // 新增：通知 App.jsx 已登录
+    navigate("/choices");
+  };
 
   const handleSignUp = () => {
     navigate("/signup");
@@ -46,7 +47,6 @@ export function Login() {
       <h1 className="mb-4">Welcome to Quick Delivery</h1>
 
       <form onSubmit={handleLogin} className="w-50">
-
         <div className="mb-3">
           <label className="form-label">Store</label>
           <input
@@ -69,11 +69,7 @@ export function Login() {
           />
         </div>
 
-        {error && (
-          <div className="alert alert-danger">
-            {error}
-          </div>
-        )}
+        {error && <div className="alert alert-danger">{error}</div>}
 
         <div className="d-flex gap-2 mt-3">
           <button type="submit" className="btn-login w-50">

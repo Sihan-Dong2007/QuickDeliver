@@ -9,7 +9,7 @@ import { Choices } from './choices/choices';
 import { Table } from './table/table';
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(null); // 保存当前登录商店名
+  const [currentUser, setCurrentUser] = useState(localStorage.getItem("store") || null); // 保持登录状态刷新页面
 
   return (
     <BrowserRouter>
@@ -32,20 +32,26 @@ export default function App() {
                   Sign Up
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/choices">
-                  Food Choices
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/table">
-                  View Order
-                </NavLink>
-              </li>
+
+              {/* 只有登录成功才显示的链接 */}
+              {currentUser && (
+                <>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/choices">
+                      Food Choices
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/table">
+                      View Order
+                    </NavLink>
+                  </li>
+                </>
+              )}
             </menu>
 
             {currentUser && (
-              <div className="text-light">
+              <div className="text-light ms-4">
                 Logged in as: <strong>{currentUser}</strong>
               </div>
             )}
@@ -55,8 +61,29 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login setCurrentUser={setCurrentUser} />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/choices" element={<Choices currentUser={currentUser} />} />
-          <Route path="/table" element={<Table currentUser={currentUser} />} />
+
+          <Route
+            path="/choices"
+            element={
+              currentUser ? (
+                <Choices currentUser={currentUser} />
+              ) : (
+                <Login setCurrentUser={setCurrentUser} />
+              )
+            }
+          />
+
+          <Route
+            path="/table"
+            element={
+              currentUser ? (
+                <Table currentUser={currentUser} />
+              ) : (
+                <Login setCurrentUser={setCurrentUser} />
+              )
+            }
+          />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
 
