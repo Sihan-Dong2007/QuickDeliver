@@ -5,10 +5,10 @@ import './table.css';
 export function Table() {
   const [order, setOrder] = useState(null);
   const [store, setStore] = useState('');
-
   const [quote, setQuote] = useState(null);
 
   useEffect(() => {
+    // 获取已保存的订单和商店名
     const savedOrder = localStorage.getItem('order');
     const savedStore = localStorage.getItem('store');
 
@@ -19,6 +19,8 @@ export function Table() {
     if (savedStore) {
       setStore(savedStore);
     }
+
+    // 随机名言列表
     const quotes = [
       { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
       { text: "Code is like humor. When you have to explain it, it’s bad.", author: "Cory House" },
@@ -27,10 +29,12 @@ export function Table() {
       { text: "Make it work, make it right, make it fast.", author: "Kent Beck" }
     ];
 
+    // 随机选择一句
     const randomIndex = Math.floor(Math.random() * quotes.length);
     setQuote(quotes[randomIndex]);
   }, []);
 
+  // 如果没有订单
   if (!order) {
     return (
       <main className="table-page container py-5 text-center">
@@ -79,6 +83,18 @@ export function Table() {
         >
           Clear Order
         </button>
+
+        <hr />
+
+        <div className="quote-section mt-4">
+          <h4>Quote of the Day</h4>
+          {quote && (
+            <>
+              <p className="quote-text">"{quote.text}"</p>
+              <p className="quote-author">— {quote.author}</p>
+            </>
+          )}
+        </div>
 
       </div>
     </main>
