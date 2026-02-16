@@ -124,13 +124,41 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [ ] **All functionality implemented or mocked out**
-- Implemented login functionality using React state.
-- Mocked backend authentication using localStorage to store the store name.
-- Implemented form validation and error handling.
+- Implemented login and sign-up functionality using React state and localStorage.
+- Users must sign up first; only registered store names and passwords can log in.
+- Sign-up stores credentials in localStorage to simulate backend persistence.
+- Implemented form validation and error handling:
+- Shows an error if store name or password is empty.
+- Shows an error if attempting to sign up with an already registered store name.
+- Implemented conditional rendering:
+- The Table page only displays if an order exists.
+- The quote of the day is only shown after an order has been created.
+- Implemented mocked dynamic content:
+- Randomly selects a quote from a hardcoded list for the Table page.
+- Order and store information are loaded from localStorage to simulate a backend.
+
 - [ ] **Hooks**
-- Used useState to manage form input values and error messages.
-- Used useEffect to load saved store name from localStorage when the component mounts.
-- Used React Router's useNavigate hook for programmatic navigation after login.
+- Used useState to manage:
+- Login form inputs (store name, password)
+- Sign-up form inputs
+- Error messages
+- Order and store state in the Table page
+- Random quote state in the Table page
+- Used useEffect to:
+- Load saved store names, order data, and select a random quote when the Table component mounts.
+- Initialize form fields if needed when components mount.
+  
+- [ ] **Navigation and routing**
+- Used React Router with <Routes> and <Route> to navigate between Login, Sign-Up, Choices, and Table pages.
+- Used useNavigate hook to programmatically redirect after successful login or sign-up.
+- Protected pages: users cannot access Choices or Table unless they are logged in.
+
+- [ ] **Mock backend and persistence**
+- Used localStorage to mock backend storage for:
+- Registered store names and passwords
+- Orders created in the Choices page
+- Ensures that refreshing the page retains user session (store name) and order state.
+
 
 ## 🚀 Service deliverable
 
