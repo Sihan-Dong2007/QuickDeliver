@@ -12,16 +12,30 @@ export function Login() {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (store && password) {
-      localStorage.setItem("store", store);
+  if (!store || !password) {
+    setError("Please enter store and password");
+    return;
+  }
 
-      navigate("/choices");
-    } else {
-      setError("Please enter store and password");
-    }
-  };
+  // 读取注册过的用户列表
+  const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  // 查找是否有匹配的 store + password
+  const validUser = users.find(
+    (u) => u.store === store && u.password === password
+  );
+
+  if (!validUser) {
+    setError("Invalid store name or password. Please sign up first.");
+    return;
+  }
+
+  // 登录成功
+  localStorage.setItem("store", store);
+  navigate("/choices");
+};
 
   const handleSignUp = () => {
     navigate("/signup");
