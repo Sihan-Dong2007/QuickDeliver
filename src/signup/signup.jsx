@@ -10,7 +10,7 @@ export function SignUp() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     if (!store || !password) {
@@ -18,22 +18,27 @@ export function SignUp() {
       return;
     }
 
-    // 获取已有用户列表
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    try {
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ store, password }),
+      });
 
-    // 检查商店名是否已注册
-    if (users.find(u => u.store === store)) {
-      setError('Store name already registered. Please choose another.');
-      return;
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.msg);
+        return;
+      }
+
+      alert('Sign Up successful! Please login.');
+      navigate('/');
+    } catch (err) {
+      setError('Server error. Please try again.');
     }
-
-    // 保存新用户
-    users.push({ store, password });
-    localStorage.setItem('users', JSON.stringify(users));
-
-    // 注册完成跳转到登录页
-    alert('Sign Up successful! Please login.');
-    navigate('/');
   };
 
   return (
