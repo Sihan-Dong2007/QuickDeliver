@@ -31,7 +31,9 @@ app.post('/api/signup', async (req, res) => {
     id: uuidv4(),
     store,
     password: hashedPassword,
+    token: uuidv4(),
   };
+
 
   users.push(newUser);
 
