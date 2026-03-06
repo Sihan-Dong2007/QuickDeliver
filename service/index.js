@@ -103,12 +103,12 @@ app.get('/api/orders', verifyAuth, (req, res) => {
 // 端口 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
+app.use(express.static('public'));
 // 测试接口
 app.get('/api/test', (req, res) => {
   res.send({ msg: 'Backend working' });
 });
 
-app.use(express.static('public'));
 // 启动服务器
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
