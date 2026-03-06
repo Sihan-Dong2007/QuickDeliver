@@ -20,18 +20,21 @@ export function Table() {
       setStore(savedStore);
     }
 
-    // 随机名言列表
-    const quotes = [
-      { text: "Stay hungry, stay foolish.", author: "Steve Jobs" },
-      { text: "Code is like humor. When you have to explain it, it’s bad.", author: "Cory House" },
-      { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
-      { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
-      { text: "Make it work, make it right, make it fast.", author: "Kent Beck" }
-    ];
+  fetch('https://quote.cs260.click')
+    .then((response) => response.json())
+    .then((data) => {
+      setQuote({
+        text: data.quote,
+        author: data.author
+      });
+    })
+    .catch(() => {
+      setQuote({
+        text: "Could not load quote.",
+        author: "System"
+      });
+    });
 
-    // 随机选择一句
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    setQuote(quotes[randomIndex]);
   }, []);
 
   // 如果没有订单
