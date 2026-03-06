@@ -108,6 +108,7 @@ app.get('/api/test', (req, res) => {
   res.send({ msg: 'Backend working' });
 });
 
+app.use(express.static('public'));
 // 启动服务器
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
