@@ -65,6 +65,7 @@ app.post('/api/login', async (req, res) => {
   res.cookie('token', user.token, {
     httpOnly: true,
     sameSite: 'strict',
+    secure: true
   });
 
   res.json({ store: user.store });
