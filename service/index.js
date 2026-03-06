@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 
 // 允许解析 JSON
 app.use(express.json());
+app.use(cookieParser());
 
 // 临时用户存储（后面可以换数据库）
 let users = [];
