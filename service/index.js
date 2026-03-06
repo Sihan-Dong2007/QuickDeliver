@@ -83,6 +83,18 @@ app.delete('/api/logout', (req, res) => {
   res.status(204).end();
 });
 
+function verifyAuth(req, res, next) {
+  const token = req.cookies.token;
+
+  const user = users.find(u => u.token === token);
+
+  if (!user) {
+    return res.status(401).json({ msg: 'Unauthorized' });
+  }
+
+  next();
+}
+
 // 端口 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
