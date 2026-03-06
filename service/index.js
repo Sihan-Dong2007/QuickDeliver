@@ -95,6 +95,11 @@ function verifyAuth(req, res, next) {
   next();
 }
 
+// 只有登录用户可以访问
+app.get('/api/orders', verifyAuth, (req, res) => {
+  res.json({ msg: 'Secret orders data' });
+});
+
 // 端口 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
