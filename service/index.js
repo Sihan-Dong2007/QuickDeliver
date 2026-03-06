@@ -37,7 +37,12 @@ app.post('/api/signup', async (req, res) => {
 
   users.push(newUser);
 
-  res.json({ msg: 'Signup successful' });
+  res.cookie('token', newUser.token, {
+  httpOnly: true,
+  sameSite: 'strict',
+  });
+
+  res.json({ store: newUser.store });
 });
 
 // 端口 4000
