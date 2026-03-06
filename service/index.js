@@ -70,6 +70,19 @@ app.post('/api/login', async (req, res) => {
   res.json({ store: user.store });
 });
 
+app.delete('/api/logout', (req, res) => {
+  const token = req.cookies.token;
+
+  const user = users.find(u => u.token === token);
+
+  if (user) {
+    user.token = null;
+  }
+
+  res.clearCookie('token');
+  res.status(204).end();
+});
+
 // 端口 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
