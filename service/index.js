@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 // 允许解析 JSON
 app.use(express.json());
