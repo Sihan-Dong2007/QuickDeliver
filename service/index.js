@@ -45,6 +45,31 @@ app.post('/api/signup', async (req, res) => {
   res.json({ store: newUser.store });
 });
 
+app.post('/api/login', async (req, res) => {
+  const { store, password } = req.body;
+
+  const user = users.find(u => u.store === store);
+
+  if (!user) {
+    return res.status(401).json({ msg: 'Invalid credentials' });
+  }
+
+  const valid = await bcrypt.compare(password, user.password);
+
+  if (!valid) {
+    return res.status(401).json({ msg: 'Invalid credentials' });
+  }
+
+  user.token = uuidv4();
+
+  res.cookie('token', user.token, {
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+
+  res.json({ store: user.store });
+});
+
 // 端口 4000
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
