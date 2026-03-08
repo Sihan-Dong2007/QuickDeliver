@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../app.css";
-
 import { useNavigate } from "react-router-dom";
 
 export function Login({ setCurrentUser }) {
@@ -11,7 +10,7 @@ export function Login({ setCurrentUser }) {
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!store || !password) {
@@ -19,23 +18,31 @@ export function Login({ setCurrentUser }) {
       return;
     }
 
-    // 读取注册过的用户列表
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ store, password })
+      });
 
-    // 查找是否有匹配的 store + password
-    const validUser = users.find(
-      (u) => u.store === store && u.password === password
-    );
+      if (!response.ok) {
+        setError("Invalid store name or password");
+        return;
+      }
 
-    if (!validUser) {
-      setError("Invalid store name or password. Please sign up first.");
-      return;
+      const data = await response.json();
+
+      // 登录成功
+      localStorage.setItem("store", data.store);
+      setCurrentUser(data.store);
+
+      navigate("/choices");
+
+    } catch (err) {
+      setError("Login failed. Server error.");
     }
-
-    // 登录成功
-    localStorage.setItem("store", store);
-    setCurrentUser(store); // 新增：通知 App.jsx 已登录
-    navigate("/choices");
   };
 
   const handleSignUp = () => {
@@ -47,6 +54,7 @@ export function Login({ setCurrentUser }) {
       <h1 className="mb-4">Welcome to Quick Delivery</h1>
 
       <form onSubmit={handleLogin} className="w-50">
+
         <div className="mb-3">
           <label className="form-label">Store</label>
           <input
@@ -75,10 +83,16 @@ export function Login({ setCurrentUser }) {
           <button type="submit" className="btn-login w-50">
             Login
           </button>
-          <button type="button" className="btn-login w-50" onClick={handleSignUp}>
+
+          <button
+            type="button"
+            className="btn-login w-50"
+            onClick={handleSignUp}
+          >
             Sign Up
           </button>
         </div>
+
       </form>
     </main>
   );
