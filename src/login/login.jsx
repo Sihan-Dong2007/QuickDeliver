@@ -12,6 +12,7 @@ export function Login({ setCurrentUser }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!store || !password) {
       setError("Please enter store and password");
@@ -21,25 +22,21 @@ export function Login({ setCurrentUser }) {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ store, password })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ store, password }),
+        credentials: "include", // 发送 cookie
       });
-
-      if (!response.ok) {
-        setError("Invalid store name or password");
-        return;
-      }
 
       const data = await response.json();
 
+      if (!response.ok) {
+        setError(data.msg || "Invalid store name or password");
+        return;
+      }
+
       // 登录成功
-      localStorage.setItem("store", data.store);
-      setCurrentUser(data.store);
-
+      setCurrentUser(data.store); // 前端状态保存
       navigate("/choices");
-
     } catch (err) {
       setError("Login failed. Server error.");
     }
@@ -84,11 +81,7 @@ export function Login({ setCurrentUser }) {
             Login
           </button>
 
-          <button
-            type="button"
-            className="btn-login w-50"
-            onClick={handleSignUp}
-          >
+          <button type="button" className="btn-login w-50" onClick={handleSignUp}>
             Sign Up
           </button>
         </div>

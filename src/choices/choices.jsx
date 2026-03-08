@@ -9,43 +9,46 @@ export function Choices() {
   const [food, setFood] = useState('');
   const [weather, setWeather] = useState('');
   const [transportTime, setTransportTime] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (food && weather) {
       let base = 20;
-
       if (weather === 'Hot & Humid') base += 10;
       if (weather === 'Cold & Dry') base += 5;
       if (weather === 'Plum Rain Season') base += 15;
-
       setTransportTime(`${base} minutes`);
     }
   }, [food, weather]);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError('');
 
     if (!food || !weather) {
-      alert('Please select food and weather.');
+      setError('Please select both food and weather.');
       return;
     }
 
     const order = { food, weather, transportTime };
 
     try {
-
-      await fetch('/api/orders', {
+      const res = await fetch('/api/orders', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order),
+        credentials: 'include', // 🔑 发送 cookie 给后端
       });
 
-      navigate('/table');
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.msg || 'Failed to save order.');
+        return;
+      }
 
+      navigate('/table'); // 下一个页面显示订单
     } catch (err) {
-      alert("Failed to save order.");
+      setError('Failed to save order. Server error.');
     }
   }
 
@@ -106,9 +109,7 @@ export function Choices() {
             value="Hot & Humid"
             onChange={(e) => setWeather(e.target.value)}
           />
-          <label className="form-check-label">
-            Hot & Humid
-          </label>
+          <label className="form-check-label">Hot & Humid</label>
         </div>
 
         <div className="form-check">
@@ -119,9 +120,7 @@ export function Choices() {
             value="Cold & Dry"
             onChange={(e) => setWeather(e.target.value)}
           />
-          <label className="form-check-label">
-            Cold & Dry
-          </label>
+          <label className="form-check-label">Cold & Dry</label>
         </div>
 
         <div className="form-check">
@@ -132,22 +131,15 @@ export function Choices() {
             value="Plum Rain Season"
             onChange={(e) => setWeather(e.target.value)}
           />
-          <label className="form-check-label">
-            Plum Rain Season
-          </label>
+          <label className="form-check-label">Plum Rain Season</label>
         </div>
 
         <div className="mt-4">
-          <label className="form-label">
-            Estimated Transport Time:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            value={transportTime}
-            readOnly
-          />
+          <label className="form-label">Estimated Transport Time:</label>
+          <input type="text" className="form-control" value={transportTime} readOnly />
         </div>
+
+        {error && <div className="alert alert-danger mt-3">{error}</div>}
 
         <button type="submit" className="confirm-btn mt-4">
           Confirm

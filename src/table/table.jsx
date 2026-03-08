@@ -3,67 +3,66 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './table.css';
 
 export function Table() {
-  const [order, setOrder] = useState(null);
-  const [store, setStore] = useState('');
+  const [orders, setOrders] = useState([]);
   const [quote, setQuote] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const res = await fetch('/api/orders', {
+          credentials: 'include', //  发送 cookie 给后台
+        });
 
-    const savedStore = localStorage.getItem('store');
+        if (!res.ok) {
+          const data = await res.json();
+          setError(data.msg || 'Failed to fetch orders.');
+          return;
+        }
 
-    if (savedStore) {
-      setStore(savedStore);
+        const data = await res.json();
+        setOrders(data);
+
+      } catch (err) {
+        setError('Failed to fetch orders. Server error.');
+      }
     }
 
-    // 从 backend 获取订单
-    fetch('/api/orders')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.length > 0) {
-          setOrder(data[data.length - 1]); // 显示最新订单
-        }
-      })
-      .catch(() => {
-        console.log("Could not load orders");
-      });
+    fetchOrders();
 
-    // quote API
+    // 获取每日 quote
     fetch('https://quote.cs260.click')
-      .then((response) => response.json())
-      .then((data) => {
-        setQuote({
-          text: data.quote,
-          author: data.author
-        });
-      })
-      .catch(() => {
-        setQuote({
-          text: "Could not load quote.",
-          author: "System"
-        });
-      });
+      .then((res) => res.json())
+      .then((data) => setQuote({ text: data.quote, author: data.author }))
+      .catch(() => setQuote({ text: 'Could not load quote.', author: 'System' }));
 
   }, []);
 
-  if (!order) {
+  if (error) {
     return (
-      <main className="table-page container py-5 text-center">
-        <h2>No order found.</h2>
-        <p>Please go back and create an order.</p>
+      <main className="container py-5 text-center">
+        <h2>Error</h2>
+        <p>{error}</p>
       </main>
     );
   }
+
+  if (!orders.length) {
+    return (
+      <main className="container py-5 text-center">
+        <h2>No orders found.</h2>
+      </main>
+    );
+  }
+
+  const order = orders[orders.length - 1]; // 显示最新订单
 
   return (
     <main className="table-page container py-5">
       <div className="table-card">
 
-        <h2>You are signed in as:</h2>
-        <p>{store || 'Unknown Store'}</p>
-
-        <hr />
-
         <h2>Order Information</h2>
+        <hr />
 
         <table className="custom-table">
           <thead>
@@ -73,7 +72,6 @@ export function Table() {
               <th>Delivery Time</th>
             </tr>
           </thead>
-
           <tbody>
             <tr>
               <td>{order.food}</td>
@@ -87,14 +85,12 @@ export function Table() {
 
         <div className="quote-section mt-4">
           <h4>Quote of the Day</h4>
-
           {quote && (
             <>
               <p className="quote-text">"{quote.text}"</p>
               <p className="quote-author">— {quote.author}</p>
             </>
           )}
-
         </div>
 
       </div>
