@@ -22,7 +22,7 @@ export function Choices() {
     }
   }, [food, weather]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!food || !weather) {
@@ -31,9 +31,22 @@ export function Choices() {
     }
 
     const order = { food, weather, transportTime };
-    localStorage.setItem('order', JSON.stringify(order));
 
-    navigate('/table');
+    try {
+
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+      });
+
+      navigate('/table');
+
+    } catch (err) {
+      alert("Failed to save order.");
+    }
   }
 
   return (
