@@ -8,36 +8,43 @@ export function Table() {
   const [quote, setQuote] = useState(null);
 
   useEffect(() => {
-    // 获取已保存的订单和商店名
-    const savedOrder = localStorage.getItem('order');
-    const savedStore = localStorage.getItem('store');
 
-    if (savedOrder) {
-      setOrder(JSON.parse(savedOrder));
-    }
+    const savedStore = localStorage.getItem('store');
 
     if (savedStore) {
       setStore(savedStore);
     }
 
-  fetch('https://quote.cs260.click')
-    .then((response) => response.json())
-    .then((data) => {
-      setQuote({
-        text: data.quote,
-        author: data.author
+    // 从 backend 获取订单
+    fetch('/api/orders')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length > 0) {
+          setOrder(data[data.length - 1]); // 显示最新订单
+        }
+      })
+      .catch(() => {
+        console.log("Could not load orders");
       });
-    })
-    .catch(() => {
-      setQuote({
-        text: "Could not load quote.",
-        author: "System"
+
+    // quote API
+    fetch('https://quote.cs260.click')
+      .then((response) => response.json())
+      .then((data) => {
+        setQuote({
+          text: data.quote,
+          author: data.author
+        });
+      })
+      .catch(() => {
+        setQuote({
+          text: "Could not load quote.",
+          author: "System"
+        });
       });
-    });
 
   }, []);
 
-  // 如果没有订单
   if (!order) {
     return (
       <main className="table-page container py-5 text-center">
@@ -57,7 +64,6 @@ export function Table() {
         <hr />
 
         <h2>Order Information</h2>
-        <hr />
 
         <table className="custom-table">
           <thead>
@@ -77,26 +83,18 @@ export function Table() {
           </tbody>
         </table>
 
-        <button
-          className="clear-btn mt-4"
-          onClick={() => {
-            localStorage.removeItem('order');
-            window.location.reload();
-          }}
-        >
-          Clear Order
-        </button>
-
         <hr />
 
         <div className="quote-section mt-4">
           <h4>Quote of the Day</h4>
+
           {quote && (
             <>
               <p className="quote-text">"{quote.text}"</p>
               <p className="quote-author">— {quote.author}</p>
             </>
           )}
+
         </div>
 
       </div>
