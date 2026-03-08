@@ -1,18 +1,20 @@
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
-const app = express();
 const cookieParser = require('cookie-parser');
 
-// 允许解析 JSON
+const app = express();
+
 app.use(express.json());
 app.use(cookieParser());
 
-// 临时用户存储（后面可以换数据库）
+// 临时存储（之后可以换数据库)
 let users = [];
 let orders = [];
 
-// 注册接口
+
+// SIGNUP
+
 app.post('/api/signup', async (req, res) => {
   const { store, password } = req.body;
 
@@ -20,12 +22,10 @@ app.post('/api/signup', async (req, res) => {
     return res.status(400).json({ msg: 'Missing store or password' });
   }
 
-  // 检查是否已存在
   if (users.find(u => u.store === store)) {
     return res.status(409).json({ msg: 'Store already exists' });
   }
 
-  // 加密密码
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = {
@@ -35,16 +35,18 @@ app.post('/api/signup', async (req, res) => {
     token: uuidv4(),
   };
 
-
   users.push(newUser);
 
   res.cookie('token', newUser.token, {
-  httpOnly: true,
-  sameSite: 'strict',
+    httpOnly: true,
+    sameSite: 'strict',
   });
 
   res.json({ store: newUser.store });
 });
+
+
+// LOGIN
 
 app.post('/api/login', async (req, res) => {
   const { store, password } = req.body;
@@ -71,6 +73,9 @@ app.post('/api/login', async (req, res) => {
   res.json({ store: user.store });
 });
 
+
+// LOGOUT
+
 app.delete('/api/logout', (req, res) => {
   const token = req.cookies.token;
 
@@ -84,6 +89,9 @@ app.delete('/api/logout', (req, res) => {
   res.status(204).end();
 });
 
+
+// AUTH MIDDLEWARE
+
 function verifyAuth(req, res, next) {
   const token = req.cookies.token;
 
@@ -96,25 +104,56 @@ function verifyAuth(req, res, next) {
   next();
 }
 
-// 只有登录用户可以访问
-app.get('/api/orders', verifyAuth, (req, res) => {
-  res.json({ msg: 'Secret orders data' });
+
+// CREATE ORDER
+
+app.post('/api/orders', verifyAuth, (req, res) => {
+  const { food, weather, transportTime } = req.body;
+
+  if (!food || !weather || !transportTime) {
+    return res.status(400).json({ msg: 'Missing order data' });
+  }
+
+  const newOrder = {
+    id: uuidv4(),
+    food,
+    weather,
+    transportTime,
+  };
+
+  orders.push(newOrder);
+
+  res.json(newOrder);
 });
 
-// 端口 4000
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
+// GET ORDERS
+
+app.get('/api/orders', verifyAuth, (req, res) => {
+  res.json(orders);
+});
+
+
+// TEST API
+
+app.get('/api/test', (req, res) => {
+  res.json({ msg: 'Backend working' });
+});
+
+
+// STATIC FRONTEND
 
 app.use(express.static('public'));
-// 测试接口
-app.get('/api/test', (req, res) => {
-  res.send({ msg: 'Backend working' });
-});
 
 app.get('*', (req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-// 启动服务器
+
+// START SERVER
+
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
