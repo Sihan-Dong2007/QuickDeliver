@@ -179,12 +179,12 @@ Refreshing the page preserves login session and order state.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Node.js/Express HTTP service** - Implemented backend service with user registration, login, logout, and order management endpoints.
-- [x] **Static middleware for frontend** - Configured Express to serve the React frontend.
-- [x] **Calls to third party endpoints** - Integrated the daily quote from https://quote.cs260.click.
-- [x] **Backend service endpoints** - Created /api/signup, /api/login, /api/logout, /api/orders endpoints with authentication.
-- [x] **Frontend calls service endpoints** - Updated React frontend to call backend endpoints using fetch, with POST and GET requests.
-- [x] **Supports registration, login, logout, and restricted endpoint** - Users can register, log in, log out, and view/create orders only if authenticated.
+- [x] **Node.js/Express HTTP service** - Implemented backend service with user registration, login, logout, and order management endpoints. （I created a backend server using Node.js and Express. The server handles requests from the frontend and manages user authentication and order data. I organized the routes and middleware so the application can process requests properly.）
+- [x] **Static middleware for frontend** - Configured Express to serve the React frontend. （I configured Express static middleware to serve the React frontend files. This allows the frontend application to be accessed through the same server as the backend API.）
+- [x] **Calls to third party endpoints** - Integrated the daily quote from https://quote.cs260.click. （I integrated a third-party API that returns a daily quote from https://quote.cs260.click. The backend fetches the quote and makes it available to the frontend so it can be displayed on the page.）
+- [x] **Backend service endpoints** - Created /api/signup（for creating a new user account）, /api/login（for authenticating existing users）, /api/logout（for ending a user session）, /api/orders endpoints（for retrieving and creating orders） with authentication. （These endpoints process JSON requests and return responses.）
+- [x] **Frontend calls service endpoints** - Updated React frontend to call backend endpoints using fetch, with POST and GET requests. （I updated the React frontend to communicate with the backend using fetch. The frontend sends POST requests for login, signup, and creating orders, and GET requests for retrieving order data.）
+- [x] **Supports registration, login, logout, and restricted endpoint** - Users can register, log in, log out, and view/create orders only if authenticated.（The application now supports user authentication. Users can create an account, log in, and log out. Access to the /api/orders endpoint is restricted so only authenticated users can view or create orders.）
 
 ## 🚀 DB deliverable
 
