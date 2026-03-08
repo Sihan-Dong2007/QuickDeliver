@@ -21,12 +21,14 @@ export default function App() {
 function AppContent({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await fetch('/api/logout', { method: 'DELETE' });
+
     localStorage.removeItem("store");
-    localStorage.removeItem("users");
     setCurrentUser(null);
+
     navigate("/");
-  };
+};
 
   return (
     <div className="body">
