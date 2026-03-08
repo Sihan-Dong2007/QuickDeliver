@@ -179,12 +179,12 @@ Refreshing the page preserves login session and order state.
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - Implemented backend service with user registration, login, logout, and order management endpoints.
+- [x] **Static middleware for frontend** - Configured Express to serve the React frontend.
+- [x] **Calls to third party endpoints** - Integrated the daily quote from https://quote.cs260.click.
+- [x] **Backend service endpoints** - Created /api/signup, /api/login, /api/logout, /api/orders endpoints with authentication.
+- [x] **Frontend calls service endpoints** - Updated React frontend to call backend endpoints using fetch, with POST and GET requests.
+- [x] **Supports registration, login, logout, and restricted endpoint** - Users can register, log in, log out, and view/create orders only if authenticated.
 
 ## 🚀 DB deliverable
 
