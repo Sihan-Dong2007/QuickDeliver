@@ -19,11 +19,22 @@ app.use(cookieParser());
 
 let db;
 
-// 初始化数据库
-async function initDB() {
-  db = await connectDB();
-}
-initDB();
+// ⚡ 使用立即执行函数确保数据库连接完成后再启动服务
+(async () => {
+  try {
+    db = await connectDB();
+    console.log('Database connected!');
+
+    // START SERVER
+    const port = process.argv.length > 2 ? process.argv[2] : 4000;
+    app.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+    });
+  } catch (err) {
+    console.error('Failed to connect to database:', err);
+    process.exit(1); // 连接失败直接退出，PM2 会看到并重启
+  }
+})();
 
 // SIGNUP
 app.post('/api/signup', async (req, res) => {
@@ -101,18 +112,8 @@ app.get('/api/test', (req, res) => {
   res.json({ msg: 'Backend working' });
 });
 
-// STATIC FRONTEND
-const path = require('path');
-
-app.use(express.static(path.join(__dirname, 'dist'))); // serve dist 文件夹
-
-// 所有未匹配的请求都返回 index.html
+// ⚡ STATIC FRONTEND
+app.use(express.static(path.join(__dirname, 'dist'))); // 指向 React 打包后的 dist 文件夹
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
-// START SERVER
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
 });
