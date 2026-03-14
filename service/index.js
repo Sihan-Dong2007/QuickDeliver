@@ -102,9 +102,13 @@ app.get('/api/test', (req, res) => {
 });
 
 // STATIC FRONTEND
-app.use(express.static(path.join(__dirname, '../')));
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'dist'))); // serve dist 文件夹
+
+// 所有未匹配的请求都返回 index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // START SERVER
