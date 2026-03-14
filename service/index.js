@@ -2,19 +2,25 @@ const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const { connectDB, client } = require('./database.js'); // 引入数据库
 
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 
-// 临时存储（之后可以换数据库)
-let users = [];
-let orders = [];
+// 启动时连接数据库
+let db;
+let usersCollection;
+let ordersCollection;
 
+(async function initDB() {
+  db = await connectDB();
+  usersCollection = db.collection('users');   // 用户集合
+  ordersCollection = db.collection('orders'); // 订单集合
+})();
 
 // SIGNUP
-
 app.post('/api/signup', async (req, res) => {
   const { store, password } = req.body;
 
@@ -22,12 +28,12 @@ app.post('/api/signup', async (req, res) => {
     return res.status(400).json({ msg: 'Missing store or password' });
   }
 
-  if (users.find(u => u.store === store)) {
+  const existing = await usersCollection.findOne({ store });
+  if (existing) {
     return res.status(409).json({ msg: 'Store already exists' });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-
   const newUser = {
     id: uuidv4(),
     store,
@@ -35,7 +41,7 @@ app.post('/api/signup', async (req, res) => {
     token: uuidv4(),
   };
 
-  users.push(newUser);
+  await usersCollection.insertOne(newUser);
 
   res.cookie('token', newUser.token, {
     httpOnly: true,
@@ -45,27 +51,24 @@ app.post('/api/signup', async (req, res) => {
   res.json({ store: newUser.store });
 });
 
-
 // LOGIN
-
 app.post('/api/login', async (req, res) => {
   const { store, password } = req.body;
 
-  const user = users.find(u => u.store === store);
-
+  const user = await usersCollection.findOne({ store });
   if (!user) {
     return res.status(401).json({ msg: 'Invalid credentials' });
   }
 
   const valid = await bcrypt.compare(password, user.password);
-
   if (!valid) {
     return res.status(401).json({ msg: 'Invalid credentials' });
   }
 
-  user.token = uuidv4();
+  const token = uuidv4();
+  await usersCollection.updateOne({ store }, { $set: { token } });
 
-  res.cookie('token', user.token, {
+  res.cookie('token', token, {
     httpOnly: true,
     sameSite: 'strict',
   });
@@ -73,41 +76,31 @@ app.post('/api/login', async (req, res) => {
   res.json({ store: user.store });
 });
 
-
 // LOGOUT
-
-app.delete('/api/logout', (req, res) => {
+app.delete('/api/logout', async (req, res) => {
   const token = req.cookies.token;
 
-  const user = users.find(u => u.token === token);
-
-  if (user) {
-    user.token = null;
+  if (token) {
+    await usersCollection.updateOne({ token }, { $set: { token: null } });
   }
 
   res.clearCookie('token');
   res.status(204).end();
 });
 
-
 // AUTH MIDDLEWARE
-
-function verifyAuth(req, res, next) {
+async function verifyAuth(req, res, next) {
   const token = req.cookies.token;
+  if (!token) return res.status(401).json({ msg: 'Unauthorized' });
 
-  const user = users.find(u => u.token === token);
-
-  if (!user) {
-    return res.status(401).json({ msg: 'Unauthorized' });
-  }
+  const user = await usersCollection.findOne({ token });
+  if (!user) return res.status(401).json({ msg: 'Unauthorized' });
 
   next();
 }
 
-
 // CREATE ORDER
-
-app.post('/api/orders', verifyAuth, (req, res) => {
+app.post('/api/orders', verifyAuth, async (req, res) => {
   const { food, weather, transportTime } = req.body;
 
   if (!food || !weather || !transportTime) {
@@ -121,37 +114,29 @@ app.post('/api/orders', verifyAuth, (req, res) => {
     transportTime,
   };
 
-  orders.push(newOrder);
-
+  await ordersCollection.insertOne(newOrder);
   res.json(newOrder);
 });
 
-
 // GET ORDERS
-
-app.get('/api/orders', verifyAuth, (req, res) => {
+app.get('/api/orders', verifyAuth, async (req, res) => {
+  const orders = await ordersCollection.find().toArray();
   res.json(orders);
 });
 
-
 // TEST API
-
 app.get('/api/test', (req, res) => {
   res.json({ msg: 'Backend working' });
 });
 
-
 // STATIC FRONTEND
-
 app.use(express.static('public'));
 
 app.use((req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-
 // START SERVER
-
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 app.listen(port, () => {
