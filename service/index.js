@@ -19,22 +19,23 @@ app.use(cookieParser());
 
 let db;
 
-// ⚡ 使用立即执行函数确保数据库连接完成后再启动服务
+// ⚡ 数据库初始化 + 启动服务
 (async () => {
   try {
     db = await connectDB();
     console.log('Database connected!');
 
-    // START SERVER
     const port = process.argv.length > 2 ? process.argv[2] : 4000;
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });
   } catch (err) {
     console.error('Failed to connect to database:', err);
-    process.exit(1); // 连接失败直接退出，PM2 会看到并重启
+    process.exit(1); // PM2 会自动重启
   }
 })();
+
+// =================== 用户路由 ===================
 
 // SIGNUP
 app.post('/api/signup', async (req, res) => {
@@ -91,6 +92,8 @@ async function verifyAuth(req, res, next) {
   next();
 }
 
+// =================== 订单路由 ===================
+
 // CREATE ORDER
 app.post('/api/orders', verifyAuth, async (req, res) => {
   const { food, weather, transportTime } = req.body;
@@ -112,8 +115,11 @@ app.get('/api/test', (req, res) => {
   res.json({ msg: 'Backend working' });
 });
 
-// ⚡ STATIC FRONTEND
-app.use(express.static(path.join(__dirname, 'dist'))); // 指向 React 打包后的 dist 文件夹
-app.get('*', (req, res) => {
+// =================== 前端静态文件 ===================
+
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// ⚡ 捕获所有前端路由
+app.get('/:path(*)', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
