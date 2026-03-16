@@ -1,150 +1,144 @@
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
-const uuid = require('uuid');
+const cookieParser = require('cookie-parser');
+const { connectDB, client } = require('./database.js'); // 引入数据库
+
 const app = express();
-const DB = require('./database.js');
 
-const authCookieName = 'token';
-
-// The service port may be set on the command line
-const port = process.argv.length > 2 ? process.argv[2] : 3000;
-
-// JSON body parsing using built-in middleware
 app.use(express.json());
-
-// Use the cookie parser middleware for tracking authentication tokens
 app.use(cookieParser());
 
-// Serve up the application's static content
-app.use(express.static('public'));
+// 启动时连接数据库
+let db;
+let usersCollection;
+let ordersCollection;
 
-// Router for service endpoints
-const apiRouter = express.Router();
-app.use(`/api`, apiRouter);
+(async function initDB() {
+  db = await connectDB();
+  usersCollection = db.collection('users');   // 用户集合
+  ordersCollection = db.collection('orders'); // 订单集合
+})();
 
-// CreateAuth token for a new user (Signup)
-apiRouter.post('/auth/signup', async (req, res) => {
-  if (await findUser('store', req.body.store)) {
-    res.status(409).send({ msg: 'Existing store' });
-  } else {
-    const user = await createUser(req.body.store, req.body.password);
+// SIGNUP
+app.post('/api/signup', async (req, res) => {
+  const { store, password } = req.body;
 
-    setAuthCookie(res, user.token);
-    res.send({ store: user.store });
+  if (!store || !password) {
+    return res.status(400).json({ msg: 'Missing store or password' });
   }
-});
 
-// Login
-apiRouter.post('/auth/login', async (req, res) => {
-  const user = await findUser('store', req.body.store);
-  if (user) {
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      user.token = uuid.v4();
-      await DB.updateUserToken(user.store, user.token);
-      setAuthCookie(res, user.token);
-      res.send({ store: user.store });
-      return;
-    }
+  const existing = await usersCollection.findOne({ store });
+  if (existing) {
+    return res.status(409).json({ msg: 'Store already exists' });
   }
-  res.status(401).send({ msg: 'Unauthorized' });
-});
 
-// Logout
-apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    await DB.updateUserToken(user.store, null);
-  }
-  res.clearCookie(authCookieName);
-  res.status(204).end();
-});
-
-// Middleware to verify that the user is authorized
-const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    req.user = user;
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
-};
-
-// ================= Orders API =================
-
-// Create order
-apiRouter.post('/orders', verifyAuth, async (req, res) => {
-  const order = {
-    id: uuid.v4(),
-    store: req.user.store,
-    food: req.body.food,
-    weather: req.body.weather,
-    transportTime: req.body.transportTime,
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = {
+    id: uuidv4(),
+    store,
+    password: hashedPassword,
+    token: uuidv4(),
   };
 
-  await DB.addOrder(order);
-  res.send(order);
-});
+  await usersCollection.insertOne(newUser);
 
-// Get orders
-apiRouter.get('/orders', verifyAuth, async (req, res) => {
-  const orders = await DB.getOrders();
-  res.send(orders);
-});
-
-// Test API
-apiRouter.get('/test', (req, res) => {
-  res.send({ msg: 'Backend working' });
-});
-
-// Default error handler
-app.use(function (err, req, res, next) {
-  res.status(500).send({ type: err.name, message: err.message });
-});
-
-// Return the application's default page if the path is unknown
-app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
-});
-
-// ================= Helper functions =================
-
-async function createUser(store, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = {
-    store: store,
-    password: passwordHash,
-    token: uuid.v4(),
-  };
-
-  await DB.addUser(user);
-  return user;
-}
-
-async function findUser(field, value) {
-  if (!value) return null;
-
-  if (field === 'token') {
-    return DB.getUserByToken(value);
-  }
-
-  return DB.getUser(value);
-}
-
-// setAuthCookie in the HTTP response
-function setAuthCookie(res, authToken) {
-  res.cookie(authCookieName, authToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-    secure: true,
+  res.cookie('token', newUser.token, {
     httpOnly: true,
     sameSite: 'strict',
   });
-}
 
-// Start server
-const httpService = app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  res.json({ store: newUser.store });
 });
 
+// LOGIN
+app.post('/api/login', async (req, res) => {
+  const { store, password } = req.body;
+
+  const user = await usersCollection.findOne({ store });
+  if (!user) {
+    return res.status(401).json({ msg: 'Invalid credentials' });
+  }
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) {
+    return res.status(401).json({ msg: 'Invalid credentials' });
+  }
+
+  const token = uuidv4();
+  await usersCollection.updateOne({ store }, { $set: { token } });
+
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+
+  res.json({ store: user.store });
+});
+
+// LOGOUT
+app.delete('/api/logout', async (req, res) => {
+  const token = req.cookies.token;
+
+  if (token) {
+    await usersCollection.updateOne({ token }, { $set: { token: null } });
+  }
+
+  res.clearCookie('token');
+  res.status(204).end();
+});
+
+// AUTH MIDDLEWARE
+async function verifyAuth(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) return res.status(401).json({ msg: 'Unauthorized' });
+
+  const user = await usersCollection.findOne({ token });
+  if (!user) return res.status(401).json({ msg: 'Unauthorized' });
+
+  next();
+}
+
+// CREATE ORDER
+app.post('/api/orders', verifyAuth, async (req, res) => {
+  const { food, weather, transportTime } = req.body;
+
+  if (!food || !weather || !transportTime) {
+    return res.status(400).json({ msg: 'Missing order data' });
+  }
+
+  const newOrder = {
+    id: uuidv4(),
+    food,
+    weather,
+    transportTime,
+  };
+
+  await ordersCollection.insertOne(newOrder);
+  res.json(newOrder);
+});
+
+// GET ORDERS
+app.get('/api/orders', verifyAuth, async (req, res) => {
+  const orders = await ordersCollection.find().toArray();
+  res.json(orders);
+});
+
+// TEST API
+app.get('/api/test', (req, res) => {
+  res.json({ msg: 'Backend working' });
+});
+
+// STATIC FRONTEND
+app.use(express.static('public'));
+
+app.use((req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+// START SERVER
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});
