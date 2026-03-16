@@ -9,7 +9,7 @@ const app = express();
 const authCookieName = 'token';
 
 // 服务端口，可通过命令行传入
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
+const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 // ================== 中间件 ==================
 app.use(express.json());           // 解析 JSON 请求体
@@ -60,9 +60,7 @@ apiRouter.post('/auth/login', async (req, res) => {
   await DB.updateUserToken(store, token);
   setAuthCookie(res, token);
 
-  // 挂载 user 信息到 req（可选）
   req.user = { id: user.id, store: user.store };
-
   res.json({ store: user.store });
 });
 
@@ -85,9 +83,7 @@ const verifyAuth = async (req, res, next) => {
   const user = await DB.getUserByToken(token);
   if (!user) return res.status(401).json({ msg: 'Unauthorized' });
 
-  // 挂载 user 信息到 req（方便后续订单操作）
   req.user = { id: user.id, store: user.store };
-
   next();
 };
 
