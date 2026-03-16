@@ -8,12 +8,12 @@ let db;
 let usersCollection;
 let ordersCollection;
 
-// 连接数据库（lazy 初始化）
+// ================== 连接数据库 ==================
 async function connectDB() {
   if (!db) {
     try {
       await client.connect();
-      db = client.db('quickdeliver'); // 你的数据库名
+      db = client.db('quickdeliver'); // 数据库名
       usersCollection = db.collection('users');
       ordersCollection = db.collection('orders');
 
@@ -29,44 +29,58 @@ async function connectDB() {
   return db;
 }
 
-// —— 用户操作 ——
-// 确保操作前数据库已连接
+// ================== 用户操作 ==================
+
+// 根据 store 获取用户
+async function getUserByStore(store) {
+  await connectDB();
+  return usersCollection.findOne({ store });
+}
+
+// 根据 token 获取用户
+async function getUserByToken(token) {
+  await connectDB();
+  return usersCollection.findOne({ token });
+}
+
+// 添加用户
 async function addUser(user) {
   await connectDB();
   return usersCollection.insertOne(user);
 }
 
-async function getUser(query) {
-  await connectDB();
-  return usersCollection.findOne(query);
-}
-
+// 更新用户任意字段
 async function updateUser(query, updateObj) {
   await connectDB();
   return usersCollection.updateOne(query, { $set: updateObj });
 }
 
+// 移除 token
 async function removeUserToken(query) {
   await connectDB();
   return usersCollection.updateOne(query, { $unset: { token: 1 } });
 }
 
-// —— 订单操作 —— 
+// ================== 订单操作 ==================
+
+// 添加订单
 async function addOrder(order) {
   await connectDB();
   return ordersCollection.insertOne(order);
 }
 
+// 获取订单，可传 filter
 async function getOrders(filter = {}) {
   await connectDB();
   return ordersCollection.find(filter).toArray();
 }
 
-// —— 导出模块 —— 
+// ================== 导出模块 ==================
 module.exports = {
   connectDB,
+  getUserByStore,
+  getUserByToken,
   addUser,
-  getUser,
   updateUser,
   removeUserToken,
   addOrder,
