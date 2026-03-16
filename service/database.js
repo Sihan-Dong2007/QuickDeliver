@@ -20,7 +20,7 @@ const ordersCollection = db.collection('orders');
   }
 })();
 
-// ================== 用户操作 ==================
+//  用户操作 
 
 // 根据 store 获取用户
 function getUser(store) {
@@ -47,7 +47,7 @@ async function updateUserRemoveAuth(user) {
   return usersCollection.updateOne({ store: user.store }, { $unset: { token: 1 } });
 }
 
-// ================== 订单操作 ==================
+//  订单操作 
 
 // 添加订单
 async function addOrder(order) {
@@ -59,7 +59,7 @@ function getOrders(filter = {}) {
   return ordersCollection.find(filter).toArray();
 }
 
-// ================== 导出模块 ==================
+//  导出模块 
 module.exports = {
   getUser,
   getUserByToken,
