@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
-const DB = require('./database.js'); // 标准封装后的 database.js
+const DB = require('./database.js'); // 已经是老师风格的 database.js
 
 const app = express();
 const authCookieName = 'token';
@@ -14,9 +14,7 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 // ================== 中间件 ==================
 app.use(express.json());           // 解析 JSON 请求体
 app.use(cookieParser());           // Cookie 解析
-
-// 静态文件目录（React 打包后的 dist）
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist'))); // 静态文件目录
 
 // ================== 工具函数 ==================
 function setAuthCookie(res, token) {
@@ -113,16 +111,7 @@ app.use((req, res) => {
 });
 
 // ================== 启动服务器 ==================
-(async () => {
-  try {
-    await DB.connectDB(); // 确保数据库先连接
-    console.log('Database connected!');
-
-    app.listen(port, () => {
-      console.log(`Listening on port ${port}`);
-    });
-  } catch (err) {
-    console.error('Failed to connect DB:', err);
-    process.exit(1); // PM2 会自动重启
-  }
-})();
+app.listen(port, () => {
+  console.log('Database connected!'); // 老师风格，数据库模块已经连接
+  console.log(`Listening on port ${port}`);
+});
