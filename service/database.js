@@ -32,7 +32,7 @@ async function connectDB() {
 // ================== 用户操作 ==================
 
 // 根据 store 获取用户
-async function getUserByStore(store) {
+async function getUser(store) {
   await connectDB();
   return usersCollection.findOne({ store });
 }
@@ -49,16 +49,10 @@ async function addUser(user) {
   return usersCollection.insertOne(user);
 }
 
-// 更新用户任意字段
-async function updateUser(query, updateObj) {
+// 更新用户 token 或其他字段
+async function updateUserToken(store, token) {
   await connectDB();
-  return usersCollection.updateOne(query, { $set: updateObj });
-}
-
-// 移除 token
-async function removeUserToken(query) {
-  await connectDB();
-  return usersCollection.updateOne(query, { $unset: { token: 1 } });
+  return usersCollection.updateOne({ store }, { $set: { token } });
 }
 
 // ================== 订单操作 ==================
@@ -78,11 +72,10 @@ async function getOrders(filter = {}) {
 // ================== 导出模块 ==================
 module.exports = {
   connectDB,
-  getUserByStore,
+  getUser,
   getUserByToken,
   addUser,
-  updateUser,
-  removeUserToken,
+  updateUserToken,
   addOrder,
   getOrders,
 };
