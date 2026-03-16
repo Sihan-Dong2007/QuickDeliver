@@ -190,8 +190,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Successfully implemented. All order data (food, weather, transporttime) is stored in the orders collection, and can be retrieved via authenticated API endpoints.
+- [x] **Stores credentials in MongoDB** - Successfully implemented. User credentials (store name and hashed password) and authentication tokens are securely stored in the users collection, with signup, login, and logout functionality fully operational.
 
 ## 🚀 WebSocket deliverable
 
