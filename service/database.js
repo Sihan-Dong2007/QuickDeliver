@@ -34,7 +34,7 @@ function getUserByToken(token) {
 
 // 添加用户
 async function addUser(user) {
-  return usersCollection.insertOne(user);
+  await usersCollection.insertOne(user);
 }
 
 // 更新用户（可更新任意字段）

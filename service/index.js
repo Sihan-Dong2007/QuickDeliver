@@ -1,117 +1,150 @@
-const express = require('express');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
-const DB = require('./database.js'); // 已经是老师风格的 database.js
-
+const express = require('express');
+const uuid = require('uuid');
 const app = express();
+const DB = require('./database.js');
+
 const authCookieName = 'token';
 
-// 服务端口，可通过命令行传入
+// The service port may be set on the command line
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
-//中间件
-app.use(express.json());           // 解析 JSON 请求体
-app.use(cookieParser());           // Cookie 解析
-app.use(express.static(path.join(__dirname, 'dist'))); // 静态文件目录
+// JSON body parsing using built-in middleware
+app.use(express.json());
 
-// 工具函数 
-function setAuthCookie(res, token) {
-  res.cookie(authCookieName, token, {
-    maxAge: 1000 * 60 * 60 * 24 * 365, // 1 年
-    httpOnly: true,
-    sameSite: 'strict',
-  });
-}
+// Use the cookie parser middleware for tracking authentication tokens
+app.use(cookieParser());
 
-//  API 路由 
+// Serve up the application's static content
+app.use(express.static('public'));
+
+// Router for service endpoints
 const apiRouter = express.Router();
-app.use('/api', apiRouter);
+app.use(`/api`, apiRouter);
 
-//  用户注册 
+// CreateAuth token for a new user (Signup)
 apiRouter.post('/auth/signup', async (req, res) => {
-  const { store, password } = req.body;
-  if (!store || !password) return res.status(400).json({ msg: 'Missing store or password' });
+  if (await findUser('store', req.body.store)) {
+    res.status(409).send({ msg: 'Existing store' });
+  } else {
+    const user = await createUser(req.body.store, req.body.password);
 
-  const existingUser = await DB.getUser(store);
-  if (existingUser) return res.status(409).json({ msg: 'Store already exists' });
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { id: uuidv4(), store, password: hashedPassword, token: uuidv4() };
-  await DB.addUser(user);
-
-  setAuthCookie(res, user.token);
-  res.json({ store: user.store });
+    setAuthCookie(res, user.token);
+    res.send({ store: user.store });
+  }
 });
 
-//  用户登录
+// Login
 apiRouter.post('/auth/login', async (req, res) => {
-  const { store, password } = req.body;
-  const user = await DB.getUser(store);
-  if (!user) return res.status(401).json({ msg: 'Invalid credentials' });
-
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(401).json({ msg: 'Invalid credentials' });
-
-  const token = uuidv4();
-  await DB.updateUserToken(store, token);
-  setAuthCookie(res, token);
-
-  req.user = { id: user.id, store: user.store };
-  res.json({ store: user.store });
+  const user = await findUser('store', req.body.store);
+  if (user) {
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      user.token = uuid.v4();
+      await DB.updateUserToken(user.store, user.token);
+      setAuthCookie(res, user.token);
+      res.send({ store: user.store });
+      return;
+    }
+  }
+  res.status(401).send({ msg: 'Unauthorized' });
 });
 
-//  用户登出 
+// Logout
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const token = req.cookies[authCookieName];
-  if (token) {
-    const user = await DB.getUserByToken(token);
-    if (user) await DB.updateUserToken(user.store, null);
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    await DB.updateUserToken(user.store, null);
   }
   res.clearCookie(authCookieName);
   res.status(204).end();
 });
 
-//  授权中间件 
+// Middleware to verify that the user is authorized
 const verifyAuth = async (req, res, next) => {
-  const token = req.cookies[authCookieName];
-  if (!token) return res.status(401).json({ msg: 'Unauthorized' });
-
-  const user = await DB.getUserByToken(token);
-  if (!user) return res.status(401).json({ msg: 'Unauthorized' });
-
-  req.user = { id: user.id, store: user.store };
-  next();
+  const user = await findUser('token', req.cookies[authCookieName]);
+  if (user) {
+    req.user = user;
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
 };
 
-//订单相关 API
-apiRouter.post('/orders', verifyAuth, async (req, res) => {
-  const { food, weather, transportTime } = req.body;
-  if (!food || !weather || !transportTime) return res.status(400).json({ msg: 'Missing order data' });
+// ================= Orders API =================
 
-  const order = { id: uuidv4(), food, weather, transportTime };
+// Create order
+apiRouter.post('/orders', verifyAuth, async (req, res) => {
+  const order = {
+    id: uuid.v4(),
+    store: req.user.store,
+    food: req.body.food,
+    weather: req.body.weather,
+    transportTime: req.body.transportTime,
+  };
+
   await DB.addOrder(order);
-  res.json(order);
+  res.send(order);
 });
 
+// Get orders
 apiRouter.get('/orders', verifyAuth, async (req, res) => {
   const orders = await DB.getOrders();
-  res.json(orders);
+  res.send(orders);
 });
 
-// 测试 API 
+// Test API
 apiRouter.get('/test', (req, res) => {
-  res.json({ msg: 'Backend working' });
+  res.send({ msg: 'Backend working' });
 });
 
-//  SPA 前端路由 
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// Default error handler
+app.use(function (err, req, res, next) {
+  res.status(500).send({ type: err.name, message: err.message });
 });
 
-//  启动服务器 
-app.listen(port, () => {
-  console.log('Database connected!'); // 老师风格，数据库模块已经连接
+// Return the application's default page if the path is unknown
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+// ================= Helper functions =================
+
+async function createUser(store, password) {
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = {
+    store: store,
+    password: passwordHash,
+    token: uuid.v4(),
+  };
+
+  await DB.addUser(user);
+  return user;
+}
+
+async function findUser(field, value) {
+  if (!value) return null;
+
+  if (field === 'token') {
+    return DB.getUserByToken(value);
+  }
+
+  return DB.getUser(value);
+}
+
+// setAuthCookie in the HTTP response
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
+
+// Start server
+const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
