@@ -46,7 +46,9 @@ export function Table({ orders }) { // 接收 App.jsx 传过来的 orders
     );
   }
 
-  const allOrders = [...initialOrders, ...(orders || [])]; // 合并初始订单 + WebSocket 新订单
+  const allOrders = Array.from(
+  new Map([...initialOrders, ...(orders || [])].map(o => [o.id, o])).values()
+);
 
   if (!allOrders.length) {
     return (
