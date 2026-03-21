@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const { connectDB, client } = require('./database.js'); // 引入数据库
+const { peerProxy } = require('./peerProxy'); // 引入 WebSocket
 
 const app = express();
 
@@ -115,6 +116,15 @@ app.post('/api/orders', verifyAuth, async (req, res) => {
   };
 
   await ordersCollection.insertOne(newOrder);
+
+  // === 广播 WebSocket 消息 ===
+  if (wsServer) {
+    const message = JSON.stringify({ type: 'new_order', data: newOrder });
+    wsServer.clients.forEach((client) => {
+      if (client.readyState === require('ws').WebSocket.OPEN) client.send(message);
+    });
+  }
+
   res.json(newOrder);
 });
 
@@ -138,7 +148,9 @@ app.use((req, res) => {
 
 // START SERVER
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+// === 启动 WebSocket 服务 ===
+const wsServer = peerProxy(server);
