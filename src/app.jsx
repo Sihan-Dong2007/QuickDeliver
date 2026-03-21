@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
@@ -10,15 +10,40 @@ import { Table } from './table/table';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(localStorage.getItem("store") || null);
+  const [orders, setOrders] = useState([]); // 新增订单状态用于 WebSocket
+
+  // WebSocket 连接
+  useEffect(() => {
+    if (!currentUser) return; // 未登录不连接
+
+    const socket = new WebSocket(`ws://${window.location.hostname}:4000`);
+
+    socket.onopen = () => console.log("WebSocket connected");
+
+    socket.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      if (msg.type === "new_order") {
+        setOrders(prev => [...prev, msg.data]); // 新订单加入 orders 状态
+      }
+    };
+
+    socket.onclose = () => console.log("WebSocket disconnected");
+
+    return () => socket.close();
+  }, [currentUser]);
 
   return (
     <BrowserRouter>
-      <AppContent currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <AppContent 
+        currentUser={currentUser} 
+        setCurrentUser={setCurrentUser} 
+        orders={orders} // 传递给 Table 页面
+      />
     </BrowserRouter>
   );
 }
 
-function AppContent({ currentUser, setCurrentUser }) {
+function AppContent({ currentUser, setCurrentUser, orders }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -28,7 +53,7 @@ function AppContent({ currentUser, setCurrentUser }) {
     setCurrentUser(null);
 
     navigate("/");
-};
+  };
 
   return (
     <div className="body">
@@ -109,7 +134,7 @@ function AppContent({ currentUser, setCurrentUser }) {
           path="/table"
           element={
             currentUser ? (
-              <Table currentUser={currentUser} />
+              <Table currentUser={currentUser} orders={orders} />
             ) : (
               <Login setCurrentUser={setCurrentUser} />
             )

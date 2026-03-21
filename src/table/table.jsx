@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './table.css';
 
-export function Table() {
-  const [orders, setOrders] = useState([]);
+export function Table({ orders }) { // 接收 App.jsx 传过来的 orders
   const [quote, setQuote] = useState(null);
   const [error, setError] = useState('');
+
+  const [initialOrders, setInitialOrders] = useState([]); // 用于第一次加载后端已有订单
 
   useEffect(() => {
     async function fetchOrders() {
       try {
         const res = await fetch('/api/orders', {
-          credentials: 'include', //  发送 cookie 给后台
+          credentials: 'include', // 发送 cookie
         });
 
         if (!res.ok) {
@@ -21,8 +22,7 @@ export function Table() {
         }
 
         const data = await res.json();
-        setOrders(data);
-
+        setInitialOrders(data); // 初始化已有订单
       } catch (err) {
         setError('Failed to fetch orders. Server error.');
       }
@@ -35,7 +35,6 @@ export function Table() {
       .then((res) => res.json())
       .then((data) => setQuote({ text: data.quote, author: data.author }))
       .catch(() => setQuote({ text: 'Could not load quote.', author: 'System' }));
-
   }, []);
 
   if (error) {
@@ -47,7 +46,9 @@ export function Table() {
     );
   }
 
-  if (!orders.length) {
+  const allOrders = [...initialOrders, ...orders]; // 合并初始订单 + WebSocket 新订单
+
+  if (!allOrders.length) {
     return (
       <main className="container py-5 text-center">
         <h2>No orders found.</h2>
@@ -55,7 +56,7 @@ export function Table() {
     );
   }
 
-  const order = orders[orders.length - 1]; // 显示最新订单
+  const order = allOrders[allOrders.length - 1]; // 显示最新订单
 
   return (
     <main className="table-page container py-5">
