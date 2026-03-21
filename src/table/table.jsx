@@ -56,7 +56,6 @@ export function Table({ orders }) { // 接收 App.jsx 传过来的 orders
     );
   }
 
-  const order = allOrders[allOrders.length - 1]; // 显示最新订单
 
   return (
     <main className="table-page container py-5">
@@ -74,11 +73,13 @@ export function Table({ orders }) { // 接收 App.jsx 传过来的 orders
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{order.food}</td>
-              <td>{order.weather}</td>
-              <td>{order.transportTime}</td>
-            </tr>
+            {allOrders.map((order) => (
+              <tr key={order.id}>
+                <td>{order.food}</td>
+                <td>{order.weather}</td>
+                <td>{order.transportTime}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
