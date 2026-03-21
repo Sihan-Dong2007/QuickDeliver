@@ -16,7 +16,8 @@ export default function App() {
   useEffect(() => {
     if (!currentUser) return; // 未登录不连接
 
-    const socket = new WebSocket(`ws://${window.location.hostname}:4000`);
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(`${protocol}://${window.location.host}`);
 
     socket.onopen = () => console.log("WebSocket connected");
 
